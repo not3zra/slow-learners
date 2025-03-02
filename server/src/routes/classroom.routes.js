@@ -14,7 +14,20 @@ router.get("/list", async (req, res) => {
 });
 
 // TODO: Authorize before creation
-router.post("/add", async (req, res) => {
+
+const { body, validationResult } = require('express-validator');
+
+router.post("/add",
+[
+  body('name').isString().withMessage('Name must be a string'),
+  body('capacity').isInt({min: 1}).withMessage('Capacity must be a positive integer')
+
+], async (req, res) => {
+  const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
   try {
     const { name, capacity } = req.body;
     const newClass = new Classroom({

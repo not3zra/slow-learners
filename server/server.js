@@ -4,7 +4,11 @@ const connectDB = require("./src/config/db");
 
 // Routes
 const userRoutes = require("./src/routes/user.routes");
+
 const classroomRoutes = require("./src/routes/classroom.routes");
+
+const sessionRoutes = require("./src/routes/session.routes")
+
 
 const app = express();
 connectDB();
@@ -32,6 +36,12 @@ app.get("/", (req, res) => {
     /api/users/delete
 */
 app.use("/api/users", userRoutes);
+
+/*
+    /api/sessions/
+*/
+app.use("/api/sessions",sessionRoutes);
+
 
 /* 
     /api/classrooms/list
