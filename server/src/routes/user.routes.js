@@ -56,7 +56,7 @@ router.post("/logout", (req, res) => {
   });
 });
 
-router.delete("/delete", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const deletedUser = await User.findByIdAndDelete(req.params.id);
     if (!deletedUser) {

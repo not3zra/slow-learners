@@ -28,7 +28,7 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.delete("/delete", async (req, res) => {
+router.delete("/delete/:id", async (req, res) => {
   try {
     const deletedClassroom = await Classroom.findByIdAndDelete(req.params.id);
     if (!deletedClassroom) {

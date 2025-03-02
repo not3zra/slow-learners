@@ -29,14 +29,15 @@ app.get("/", (req, res) => {
     /api/users/signup
     /api/users/login
     /api/users/logout
+    /api/users/delete
 */
 app.use("/api/users", userRoutes);
 
 /* 
-    /api/classroom/list
-    /api/classroom/add
+    /api/classrooms/list
+    /api/classrooms/add
+    /api/classrooms/delete
 */
-
-app.use("/api/classroom", classroomRoutes);
+app.use("/api/classrooms", classroomRoutes);
 
 app.listen(5000, () => console.log(`Backend is running on port 5000`));
