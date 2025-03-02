@@ -4,6 +4,7 @@ const connectDB = require("./src/config/db");
 
 // Routes
 const userRoutes = require("./src/routes/user.routes");
+const classroomRoutes = require("./src/routes/classroom.routes");
 
 const app = express();
 connectDB();
@@ -30,5 +31,12 @@ app.get("/", (req, res) => {
     /api/users/logout
 */
 app.use("/api/users", userRoutes);
+
+/* 
+    /api/classroom/list
+    /api/classroom/add
+*/
+
+app.use("/api/classroom", classroomRoutes);
 
 app.listen(5000, () => console.log(`Backend is running on port 5000`));
