@@ -6,7 +6,11 @@ const authenticateUser = require('./src/middlewares/authMiddleware')
 
 // Routes
 const userRoutes = require("./src/routes/user.routes");
+
 const classroomRoutes = require("./src/routes/classroom.routes");
+
+const sessionRoutes = require("./src/routes/session.routes")
+
 
 const app = express();
 connectDB();
@@ -37,6 +41,11 @@ app.use("/api/users", userRoutes);
 
 // Protected routes (Must be logged in to access)
 app.use(authenticateUser); // Middleware for authenticating the user before accessing the below routes
+/*
+    /api/sessions/
+*/
+app.use("/api/sessions",sessionRoutes);
+
 
 /* 
     /api/classrooms/list
