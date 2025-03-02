@@ -3,7 +3,7 @@ const session = require("express-session");
 const connectDB = require("./src/config/db");
 
 // Routes
-const userRoutes = require("./src/routes/userRoutes");
+const userRoutes = require("./src/routes/user.routes");
 
 const app = express();
 connectDB();
