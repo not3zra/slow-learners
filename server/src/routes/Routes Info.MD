@@ -81,71 +81,98 @@ http://localhost:5000/api/users
 }
 ```
 
+---
 
-# **Classroom API Documentation**
+## **4️⃣ Delete User**
+**Endpoint:** `DELETE /delete/:id`  
+**Description:** Deletes a user by ID.  
 
-## **Base URL**
+**Response (Success - 200 OK):**  
+```json
+{
+    "message": "User deleted successfully"
+}
+```
+**Response (Error - 404 Not Found):**  
+```json
+{
+    "message": "User not found"
+}
+```
+
+---
+
+## **Classroom API Documentation**
+
+### **Base URL**
 ```
 http://localhost:5000/api/classrooms
 ```
+
 ---
 
-## **1️⃣ Get All Classrooms**
-- **Endpoint:** `GET /list`  
-- **Description:** Fetches a list of all classrooms.  
+## **1️⃣ Fetch All Classrooms**
+**Endpoint:** `GET /list`  
+**Description:** Retrieves all classrooms.  
 
-### **Response (Success - 200 OK)**
+**Response (Success - 200 OK):**  
 ```json
 [
     {
         "_id": "65f123abc456def789000111",
         "name": "Room A101",
-        "capacity": 30,
-        "__v": 0
-    },
-    {
-        "_id": "65f123abc456def789000222",
-        "name": "Room B202",
-        "capacity": 25
+        "capacity": 30
     }
 ]
 ```
-
-### **Response (Error - 500 Server Error)**
+**Response (Error - 500 Server Error):**  
 ```json
 {
-    "message": "Server Error",
-    "error": "Error details here"
+    "message": "Server Error"
 }
 ```
 
 ---
 
-## **2️⃣ Add a New Classroom**
-- **Endpoint:** `POST /add`  
-- **Description:** Adds a new classroom.  
+## **2️⃣ Add Classroom**
+**Endpoint:** `POST /add`  
+**Description:** Adds a new classroom.  
 
-### **Request Body (JSON)**
+**Request Body (JSON):**  
 ```json
 {
-    "name": "Room A101",
-    "capacity": 30
+    "name": "Room B202",
+    "capacity": 40
 }
 ```
-
-### **Response (Success - 200 OK)**
+**Response (Success - 200 OK):**  
 ```json
 {
     "message": "Classroom added successfully"
 }
 ```
-
-### **Response (Error - 500 Server Error)**
+**Response (Error - 500 Server Error):**  
 ```json
 {
-    "message": "Server Error",
-    "error": "Error details here"
+    "message": "Server Error"
 }
 ```
 
+---
 
+## **3️⃣ Delete Classroom**
+**Endpoint:** `DELETE /delete/:id`  
+**Description:** Deletes a classroom by ID.  
+
+**Response (Success - 200 OK):**  
+```json
+{
+    "message": "Classroom deleted successfully"
+}
+```
+**Response (Error - 404 Not Found):**  
+```json
+{
+    "message": "Classroom not found"
+}
+```
