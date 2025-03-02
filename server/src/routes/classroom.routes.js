@@ -15,7 +15,7 @@ router.get("/list", async (req, res) => {
 
 // TODO: Authorize before creation
 
-const { body, validationResult } = require('express-validator');
+const { body, validationResult, check } = require('express-validator');
 
 router.post("/add",
 [
@@ -41,7 +41,13 @@ router.post("/add",
   }
 });
 
-router.delete("/delete/:id", async (req, res) => {
+
+router.delete("/delete/:id",
+  [
+    check('id').isMongoId().withMessage("Invalid id")
+  ],
+  
+  async (req, res) => {
   try {
     const deletedClassroom = await Classroom.findByIdAndDelete(req.params.id);
     if (!deletedClassroom) {

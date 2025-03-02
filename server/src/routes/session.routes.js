@@ -38,7 +38,12 @@ router.get('/', async (req, res) => {
         }
  })
 
- router.delete('/delete', async (req, res)=>{
+ router.delete('/delete',
+    [
+        body('_id').isMongoId().withMessage('Invalid session ID.'),
+    ],
+    
+    async (req, res)=>{
     try {
         const session = await Session.findByIdAndDelete(req.body._id)
         res.json(session)

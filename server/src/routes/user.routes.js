@@ -31,7 +31,21 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+const { body, validationResult, check } = require('express-validator');
+
+router.post("/login",
+  [ 
+    body('email').isEmail().withMessage('Please enter a valid email'),
+    body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters'),
+  ],
+  
+  async (req, res) => {
+  
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
   try {
     const { email, password } = req.body;
 
@@ -61,7 +75,12 @@ router.post("/logout", (req, res) => {
   });
 });
 
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id",
+  [
+    check('id').isMongoId().withMessage('Invalid id'),
+  ],
+   
+  async (req, res) => {
   try {
     const deletedUser = await User.findByIdAndDelete(req.params.id);
     if (!deletedUser) {
