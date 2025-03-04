@@ -92,4 +92,19 @@ router.delete("/delete/:id",
   }
 });
 
+router.get("/teachers/:id/subjects",
+  [
+    check("id").isMongoId().withMessage("Invalid id")
+  ],
+  async (req, res) => {
+    try {
+      const subjects = await User.findById(req.params.id);
+      res.status(200).json({ subjects: subjects });
+    } catch (error) {
+      res.status(500).json({ message: "Server Error", error: error.message });
+    }
+  }
+);
+
+
 module.exports = router;
