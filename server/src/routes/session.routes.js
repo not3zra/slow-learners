@@ -18,9 +18,10 @@ router.get('/', async (req, res) => {
     body('teacherId').isMongoId().withMessage('Invalid teacher ID.'),
     body('classroomId').isMongoId().withMessage('Invalid classroom ID.'),
     body('subject').isString().trim().notEmpty().withMessage('Subject is required.'),
-    body('schedule.type').isIn(['single', 'weekly', 'semester-long']).withMessage('Invalid schedule type.'),
+    body('scheduleType').isIn(['single', 'weekly', 'semester-long']).withMessage('Invalid schedule type.'),
     body('schedule.startDate').isISO8601().withMessage('Invalid start date.'),
     body('schedule.endDate').optional().isISO8601().withMessage('Invalid end date.'),
+    body('schedule.timeSlot').isString().trim().notEmpty().withMessage('Time Slot invalid'),
     body('maxSeats').isInt({ min: 1 }).withMessage('Max seats must be a positive number.')
     ], 
     async (req, res)=>{
@@ -38,7 +39,12 @@ router.get('/', async (req, res) => {
         }
  })
 
- router.delete('/delete', async (req, res)=>{
+ router.delete('/delete',
+    [
+        body('_id').isMongoId().withMessage('Invalid session ID.'),
+    ],
+    
+    async (req, res)=>{
     try {
         const session = await Session.findByIdAndDelete(req.body._id)
         res.json(session)
