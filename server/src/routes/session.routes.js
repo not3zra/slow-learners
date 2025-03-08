@@ -1,56 +1,12 @@
 const express = require('express');
-const Session = require('../models/session.model')
+const { validateCreateSession, validateDeleteSession } = require('../middlewares/validationMiddleware');
+const { getSessions, createSession, deleteSession } = require('../controllers/session.controller');
 
 const router = express.Router();
-router.get('/', async (req, res) => {
-    try {
-        const sessions = await Session.find().populate('teacherId','name').populate('sessionId','name')
-        res.json(sessions)
-        } catch (error) {
-            res.status(500).json({ message: error.message })
-        }
- })
+router.get('/', getSessions)
 
- const { body, validationResult } = require('express-validator');
+router.post('/create', validateCreateSession, createSession)
 
- router.post('/create', 
-    [
-    body('teacherId').isMongoId().withMessage('Invalid teacher ID.'),
-    body('classroomId').isMongoId().withMessage('Invalid classroom ID.'),
-    body('subject').isString().trim().notEmpty().withMessage('Subject is required.'),
-    body('scheduleType').isIn(['single', 'weekly', 'semester-long']).withMessage('Invalid schedule type.'),
-    body('schedule.startDate').isISO8601().withMessage('Invalid start date.'),
-    body('schedule.endDate').optional().isISO8601().withMessage('Invalid end date.'),
-    body('schedule.timeSlot').isString().trim().notEmpty().withMessage('Time Slot invalid'),
-    body('maxSeats').isInt({ min: 1 }).withMessage('Max seats must be a positive number.')
-    ], 
-    async (req, res)=>{
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-
-        try {
-            const session = new Session(req.body);
-            await session.save();
-            res.status(201).json(session);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
- })
-
- router.delete('/delete',
-    [
-        body('_id').isMongoId().withMessage('Invalid session ID.'),
-    ],
-    
-    async (req, res)=>{
-    try {
-        const session = await Session.findByIdAndDelete(req.body._id)
-        res.json(session)
-        } catch (error) {
-            res.status(500).json({ message: error.message })
-        }
- })
+router.delete('/delete', validateDeleteSession, deleteSession)
 
 module.exports = router

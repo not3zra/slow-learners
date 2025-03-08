@@ -1,5 +1,6 @@
 const express = require("express");
 const session = require("express-session");
+// const cookieParser = require('cookie-parser');
 const connectDB = require("./src/config/db");
 
 const authenticateUser = require('./src/middlewares/authMiddleware')
@@ -40,6 +41,7 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 
 // Protected routes (Must be logged in to access)
+//TODO: Implement authentication properly
 app.use(authenticateUser); // Middleware for authenticating the user before accessing the below routes
 /*
     /api/sessions/

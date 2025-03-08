@@ -42,7 +42,7 @@ router.post("/add",
 });
 
 
-router.delete("/delete/:id",
+router.delete("/delete",
   [
     check('id').isMongoId().withMessage("Invalid id")
   ],
