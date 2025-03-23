@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
-  const [userType, setUserType] = useState("");
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
@@ -13,36 +14,21 @@ export default function Home() {
         A smart way to manage classroom sessions for slow learners.
       </p>
 
-      {/* Login Options */}
+      {/* Auth Options */}
       <div className="flex gap-6">
         <button
           className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition"
-          onClick={() => setUserType("admin")}
+          onClick={() => navigate("/login")}
         >
-          Admin Login
+          Login
         </button>
         <button
           className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-700 transition"
-          onClick={() => setUserType("teacher")}
+          onClick={() => navigate("/signup")}
         >
-          Teacher Login
-        </button>
-        <button
-          className="px-6 py-3 bg-purple-500 text-white rounded-lg hover:bg-purple-700 transition"
-          onClick={() => setUserType("student")}
-        >
-          Student Login
+          Signup
         </button>
       </div>
-
-      {/* Display Login Type */}
-      {userType && (
-        <div className="mt-6 p-4 bg-white shadow-lg rounded-lg">
-          <h2 className="text-lg font-semibold text-gray-800">
-            Redirecting to {userType} login...
-          </h2>
-        </div>
-      )}
     </div>
   );
 }
