@@ -14,7 +14,6 @@ router.get("/list", fetchAll);
 // TODO: Authorize before creation
 
 const { body, validationResult, check } = require("express-validator");
-const { fetchAll } = require("../controllers/classroom.controller");
 
 router.post(
   "/add",
