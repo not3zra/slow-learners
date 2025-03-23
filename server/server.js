@@ -13,6 +13,8 @@ const classroomRoutes = require("./src/routes/classroom.routes");
 
 const sessionRoutes = require("./src/routes/session.routes")
 
+const authRoutes = require("./src/routes/auth.routes");
+
 
 const app = express();
 connectDB();
@@ -66,5 +68,7 @@ app.use("/api/sessions",sessionRoutes);
 app.use("/api/classrooms", classroomRoutes);
 
 
+// For the FE to access BE session data
+app.use("/auth", authRoutes);
 
 app.listen(5000, () => console.log(`Backend is running on port 5000`));
