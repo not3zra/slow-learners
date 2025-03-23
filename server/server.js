@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 // const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const connectDB = require("./src/config/db");
 
 const authenticateUser = require('./src/middlewares/authMiddleware')
@@ -15,6 +16,14 @@ const sessionRoutes = require("./src/routes/session.routes")
 
 const app = express();
 connectDB();
+
+// CORS Configuration
+app.use(
+  cors({
+      origin: "http://localhost:5173", // Frontend URL
+      credentials: true, // for session cookies
+  })
+);
 
 app.use(express.json());
 
