@@ -61,7 +61,7 @@ exports.logOut= (req,res)=>{
 
 exports.deleteUser=async (req,res)=>{
     try {
-        const deletedUser = await User.findByIdAndDelete(req.body.id);
+        const deletedUser = await User.findByIdAndDelete(req.params.id);
         if (!deletedUser) {
           return res.status(404).json({ message: "User not found" });
         }
@@ -73,7 +73,7 @@ exports.deleteUser=async (req,res)=>{
 
 exports.getSubjects=async(req,res)=>{
     try {
-        const subjects = await User.findById(req.body.id);
+        const subjects = await User.findById(req.params.id);
         res.status(200).json({ subjects: subjects });
       } catch (error) {
         res.status(500).json({ message: "Server Error", error: error.message });

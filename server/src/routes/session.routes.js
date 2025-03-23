@@ -1,9 +1,11 @@
 const express = require('express');
 const { validateCreateSession, validateDeleteSession } = require('../middlewares/validationMiddleware');
-const { getSessions, createSession, deleteSession } = require('../controllers/session.controller');
+const { getSessions, createSession, deleteSession, getSession } = require('../controllers/session.controller');
 
 const router = express.Router();
 router.get('/', getSessions)
+
+router.get('/', getSession)
 
 router.post('/create', validateCreateSession, createSession)
 
