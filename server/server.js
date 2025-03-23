@@ -15,6 +15,7 @@ const sessionRoutes = require("./src/routes/session.routes")
 
 const authRoutes = require("./src/routes/auth.routes");
 
+const bookingRoutes = require("./src/routes/booking.routes")
 
 const app = express();
 connectDB();
@@ -56,6 +57,8 @@ app.use("/api/users", userRoutes);
 app.use(authenticateUser); // Middleware for authenticating the user before accessing the below routes
 /*
     /api/sessions/
+    /api/sessions/create
+    /api/sessions/delete
 */
 app.use("/api/sessions",sessionRoutes);
 
@@ -70,5 +73,10 @@ app.use("/api/classrooms", classroomRoutes);
 
 // For the FE to access BE session data
 app.use("/auth", authRoutes);
+/*
+    /api/bookings
+*/
+app.use("/api/bookings", bookingRoutes)
+
 
 app.listen(5000, () => console.log(`Backend is running on port 5000`));
