@@ -12,10 +12,7 @@ const UserSchema = new mongoose.Schema({
 
   // Teacher-Specific Fields
   subjectsTeaching: [
-    {
-      subject: { type: String }, // Example: "Mathematics"
-      programme: { type: String }, // Example: "B.Sc Computer Science"
-    },
+      { type: String } // Example: "Mathematics"
   ],
 
   createdAt: { type: Date, default: Date.now },
