@@ -1,8 +1,10 @@
 const express = require("express");
-const { logOut, logIn, deleteUser, signUp, getSubjects, addSubjects } = require("../controllers/user.controller");
+const { logOut, logIn, deleteUser, signUp, getSubjects, addSubjects, getUsers } = require("../controllers/user.controller");
 const { validateLogIn, validateDeleteUser, validateSignUp, validateGetSubjects} = require("../middlewares/validationMiddleware");
 
 const router = express.Router();
+
+router.get("/", getUsers);
 
 router.post("/signup", validateSignUp, signUp);
 

@@ -20,8 +20,7 @@ exports.validateSignUp=[
   
   body('registerNumber')
     .if(body('role').equals('student')) // Only validate if role is 'student'
-    .notEmpty().withMessage('Register number is required for students')
-    .isNumeric().withMessage('Register number must be a number'),
+    .notEmpty().withMessage('Register number is required for students'),
   
   body('programme')
     .if(body('role').equals('student')) // Only validate if role is 'student'
