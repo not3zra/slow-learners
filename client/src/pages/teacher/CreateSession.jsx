@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { MultiDropDown, Select, TimeRangePicker } from "../../components";
+import { MultiDropDown, Select, TimeRangePicker, Button } from "../../components";
 
 export default function CreateSession() {
   const [user, setUser] = useState(null);
-
+  const [clsrooms, setClsRooms] = useState([]);
   useEffect(() => {
     axios
       .get("http://localhost:5000/auth/verify", { withCredentials: true })
@@ -14,6 +14,15 @@ export default function CreateSession() {
       .catch(() => {
         console.log("User not authenticated");
       });
+    // TODO: Fetch only available classrooms
+    axios
+      .get("http://localhost:5000/api/classrooms/list", {
+        withCredentials: true,
+      })
+      .then((response) => setClsRooms(response.data.classrooms))
+      .catch(() => {
+        console.log("Error");
+      });
   }, []);
 
   const [sessionData, setSessionData] = useState({
@@ -21,6 +30,7 @@ export default function CreateSession() {
     timeSlot: { startTime: null, endTime: null },
     sessionType: "Single",
     dates: [],
+    classroom: undefined,
   });
 
   const handleChange = (e) => {
@@ -46,7 +56,7 @@ export default function CreateSession() {
   };
 
   const handleSemesterLong = (daysSelected) => {
-    console.log("Inside")
+    console.log("Inside");
     const getSemesterDates = (days) => {
       const today = new Date();
       let semesterStart, semesterEnd;
@@ -98,6 +108,9 @@ export default function CreateSession() {
     console.log("Session Data:", sessionData);
     // Submit logic goes here
   };
+
+  // TODO: Fetch available Classrooms based on the session date and times
+  useEffect(() => {}, [sessionData.dates]);
 
   useEffect(() => console.log(sessionData), [sessionData]);
 
@@ -207,6 +220,16 @@ export default function CreateSession() {
           </div>
         )}
         {/* TODO: CUSTOM DATES */}
+        <br></br>
+        <Select
+          label="Select Classroom"
+          name="classroom"
+          options={clsrooms.map((cls) => cls.name)}
+          onChange={handleChange}
+          value={sessionData.classroom || ""}
+        />
+        <br></br>
+        <Button label="Confirm" name="confirm"  />
       </div>
     </div>
   );
