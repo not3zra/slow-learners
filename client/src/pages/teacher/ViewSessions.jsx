@@ -36,7 +36,7 @@ export default function ViewSessions() {
             {sessions.map((session) => (
               <Link
                 key={session._id}
-                to={`/sessions/${session._id}`}
+                to={`/teacher/view-session/${session._id}`}
                 className="block p-4 bg-gray-700 text-white text-lg font-medium rounded-lg shadow-md hover:bg-gray-800 transition-all"
               >
                 {session.sessionName}

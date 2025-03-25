@@ -16,8 +16,8 @@ exports.getSessions= async (req, res) => {
 // Get details about a specific session
  exports.getSession = async (req,res)=>{
     try {
-        const session = await Session.findById(req.params.id).populate('teacherId').populate('classroomId')
-        res.status(201).json(session)
+        const session = await Session.findById(req.params.id)
+        res.status(201).json({session: session})
         } catch (error) {
             res.status(500).json({ message: error.message })
         }

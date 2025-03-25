@@ -5,7 +5,7 @@ const { getSessions, createSession, deleteSession, getSession } = require('../co
 const router = express.Router();
 router.get('/list', getSessions)
 
-router.get('/sessions/:id', getSession)
+router.get('/:id', getSession)
 
 // TODO: FIX Validation for create session
 router.post('/create', createSession)
