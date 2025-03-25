@@ -7,6 +7,8 @@ router.get('/list', getSessions)
 
 router.get('/:id', getSession)
 
+router.get('/get-session', getSession)
+
 // TODO: FIX Validation for create session
 router.post('/create', createSession)
 

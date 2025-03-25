@@ -17,6 +17,8 @@ const authRoutes = require("./src/routes/auth.routes");
 
 const bookingRoutes = require("./src/routes/booking.routes")
 
+const attendanceRoutes = require("./src/routes/attendance.routes")
+
 const app = express();
 connectDB();
 
@@ -77,6 +79,8 @@ app.use("/auth", authRoutes);
     /api/bookings
 */
 app.use("/api/bookings", bookingRoutes)
+
+app.use("/api/attendance",attendanceRoutes)
 
 
 app.listen(5000, () => console.log(`Backend is running on port 5000`));
