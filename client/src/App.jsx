@@ -8,6 +8,7 @@ import CreateSession from "./pages/teacher/CreateSession";
 import TeacherProfile from "./pages/teacher/TeacherProfile";
 import ViewSessions from "./pages/teacher/ViewSessions";
 import ViewSingleSession from "./pages/teacher/ViewSingleSession";
+import UploadMaterial from "./pages/teacher/UploadMaterial";
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
           path="/teacher/view-session/:id"
           element={<ViewSingleSession />}
         />
+        <Route path="/teacher/session/:id/upload-material" element={<UploadMaterial />} />
       </Routes>
     </Router>
   );

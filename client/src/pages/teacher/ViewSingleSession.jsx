@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Calendar from "react-calendar";
@@ -9,6 +9,9 @@ import { Button } from "../../components";
 export default function ViewSingleSession() {
   const { id } = useParams();
   const [session, setSession] = useState(null);
+  const [date, setDate] = useState(0);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -27,7 +30,6 @@ export default function ViewSingleSession() {
     );
   }
 
-  console.log(session.dates)
   const markedDates = session.dates.map((date) => new Date(date));
 
   const tileContent = ({ date, view }) => {
@@ -42,6 +44,19 @@ export default function ViewSingleSession() {
       return isMarked ? <div className="highlight"></div> : null;
     }
   };
+
+  const handleDayClick = (clickedDate) => {
+    const clickedDateStr = clickedDate.toISOString().split("T")[0];
+    if (session.dates.includes(clickedDateStr)) setDate(clickedDateStr);
+  };
+
+  const handleClick = (e) => {
+    if(e.target.name==="upload-materials")
+        navigate(`/teacher/session/${session._id}/upload-material`);
+    // if(e.target.name==="mark-attendance")
+    //     navigate()
+  }
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
@@ -69,20 +84,20 @@ export default function ViewSingleSession() {
           <h2 className="text-lg font-bold text-gray-700 mb-2">
             📅 Scheduled Dates
           </h2>
-          <Calendar tileContent={tileContent} />
+          <Calendar tileContent={tileContent} onClickDay={handleDayClick} />
         </div>
 
         <div className="flex justify-between mt-6">
           <Button
             label="📝 Mark Attendance"
             name="mark-attendance"
-            onClick={() => console.log("Mark Attendance Clicked")}
+            onClick={handleClick}
             className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg w-1/2"
           />
           <Button
             label="📁 Upload Materials"
             name="upload-materials"
-            onClick={() => console.log("Upload Materials Clicked")}
+            onClick={handleClick}
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-1/2"
           />
         </div>
