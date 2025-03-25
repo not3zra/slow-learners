@@ -28,18 +28,22 @@ export default function ViewSessions() {
   }, [user]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-gray-50 to-gray-100 p-6 flex flex-col items-center">
-      <div className="bg-white w-full max-w-6xl p-8 rounded-2xl shadow-2xl">
-        <h1 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">Your Sessions</h1>
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 p-6 flex flex-col items-center">
+      <div className="bg-white w-full max-w-5xl p-8 rounded-xl shadow-xl">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">Your Sessions</h1>
+        
         {sessions.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {sessions.map((session) => (
               <Link
                 key={session._id}
                 to={`/teacher/view-session/${session._id}`}
-                className="block p-4 bg-gray-700 text-white text-lg font-medium rounded-lg shadow-md hover:bg-gray-800 transition-all"
+                className="block p-4 border border-gray-300 bg-white text-gray-800 text-lg font-medium rounded-lg shadow-sm hover:shadow-md hover:bg-gray-50 transition-all"
               >
-                {session.sessionName}
+                <div className="flex justify-between items-center">
+                  <span>{session.sessionName}</span>
+                  <span className="text-sm text-gray-500">📅 {session.dates[0]}</span>
+                </div>
               </Link>
             ))}
           </div>
