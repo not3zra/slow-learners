@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Select, TimeRangePicker } from "../../components";
+import { MultiDropDown, Select, TimeRangePicker } from "../../components";
 
 export default function CreateSession() {
   const [user, setUser] = useState(null);
@@ -43,6 +43,55 @@ export default function CreateSession() {
       return dates;
     };
     setSessionData({ ...sessionData, dates: getDatesUntilSunday(value) });
+  };
+
+  const handleSemesterLong = (daysSelected) => {
+    console.log("Inside")
+    const getSemesterDates = (days) => {
+      const today = new Date();
+      let semesterStart, semesterEnd;
+
+      // Determine the current semester based on the month
+      if (today.getMonth() >= 5 && today.getMonth() <= 10) {
+        // Fall Semester [June to November]
+        semesterStart = new Date(today.getFullYear(), 5, 1);
+        semesterEnd = new Date(today.getFullYear(), 10, 30);
+      } else {
+        // Winter Semester [December to May]
+        semesterStart = new Date(
+          today.getMonth() === 11
+            ? today.getFullYear()
+            : today.getFullYear() - 1,
+          11,
+          1
+        );
+        semesterEnd = new Date(
+          today.getMonth() === 11
+            ? today.getFullYear() + 1
+            : today.getFullYear(),
+          4,
+          31
+        );
+      }
+
+      const result = [];
+
+      let currentDate = new Date(semesterStart);
+      while (currentDate <= semesterEnd) {
+        const currentDayName = currentDate.toLocaleDateString("en-US", {
+          weekday: "long",
+        });
+
+        if (days.includes(currentDayName)) {
+          result.push(new Date(currentDate));
+        }
+
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+
+      return result.map((date) => date.toISOString().split("T")[0]); // Return in YYYY-MM-DD format
+    };
+    setSessionData({ ...sessionData, dates: getSemesterDates(daysSelected) });
   };
 
   const handleSubmit = () => {
@@ -136,14 +185,28 @@ export default function CreateSession() {
             />
           </div>
         )}
-        {/* {sessionData.sessionType === "Semester-Long" && (
+        {sessionData.sessionType === "Semester-Long" && (
           <div>
             <label className="block text-sm font-medium mb-1">
               Select the days for the classes to be scheduled
             </label>
-
+            <MultiDropDown
+              options={[
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday",
+              ]}
+              defaultOptionText="Select the day(s)"
+              selectedOptionText="Selected Days are"
+              onSelectionChange={handleSemesterLong}
+            />
           </div>
-        )} */}
+        )}
+        {/* TODO: CUSTOM DATES */}
       </div>
     </div>
   );
