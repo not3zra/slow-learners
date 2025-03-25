@@ -1,51 +1,52 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const SessionSchema = new mongoose.Schema({
-    teacherId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
+const sessionSchema = new mongoose.Schema({
+  sessionName: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  subject: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  timeSlot: {
+    startTime: {
+      type: String, // Storing as string (e.g., "10:00 AM") for flexibility
+      required: true,
     },
-    classroomId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Classroom",
-        required: true,
+    endTime: {
+      type: String, // Same as startTime
+      required: true,
     },
-    subject: {
-        type: String,
-        required: true,
-        trim: true,
-    },
-    scheduleType: {
-        type: String,
-        enum: ["single", "weekly", "semester-long"],
-        required: true,
-    },
-    schedule: {
-        startDate: {
-            type: Date,
-            required: true,
-        },
-        endDate: {
-            type: Date,
-            required: function () {
-                return this.scheduleType !== "single"; // Only required for weekly/semester-long
-            },
-        },
-        timeSlot: {
-            type: String, // Example: "10:00 AM - 12:00 PM"
-            required: true,
-        },
-    },
-    maxSeats: {
-        type: Number,
-        required: true,
-        min: 1,
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
+  },
+  sessionType: {
+    type: String,
+    enum: ["Single", "Week-Long", "Semester-Long", "Custom"],
+    required: true,
+  },
+  dates: {
+    type: [String], // Array of dates in 'YYYY-MM-DD' format
+    required: true,
+  },
+  classroom: {
+    type: String,
+    required: true,
+  },
+  maxSeats: {
+    type: Number,
+    required: true,
+  },
+  teacherId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-module.exports = mongoose.model("Session", SessionSchema);
+export default mongoose.model("Session", sessionSchema);
