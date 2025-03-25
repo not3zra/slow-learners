@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { MultiDropDown, Select, TimeRangePicker, Button } from "../../components";
+import {
+  MultiDropDown,
+  Select,
+  TimeRangePicker,
+  Button,
+} from "../../components";
 
 export default function CreateSession() {
+  const [previewMode, setPreviewMode] = useState(false);
+
   const [user, setUser] = useState(null);
   const [clsrooms, setClsRooms] = useState([]);
   useEffect(() => {
@@ -118,118 +125,190 @@ export default function CreateSession() {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
       <div className="bg-white w-full max-w-4xl p-6 rounded-lg shadow-lg">
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-blue-600">Create a Session</h1>
+          <h1 className="text-3xl font-bold text-blue-600">
+            {previewMode ? "Review your selections" : "Create a Session"}
+          </h1>
         </div>
-        <Select
-          label="Select Subject"
-          name="subject"
-          options={
-            user
-              ? user.subjectsTeaching
-              : ["No Subjects.Please add more via your profile"]
-          }
-          onChange={handleChange}
-          value={sessionData.subject || ""}
-        />
-        <br></br>
-        <label className="block text-sm font-medium mb-1">
-          Select time slot
-        </label>
-        <TimeRangePicker
-          onTimeSelect={(time) => {
-            setSessionData({
-              ...sessionData,
-              timeSlot: { startTime: time.startTime, endTime: time.endTime },
-            });
-          }}
-        />
-        <br></br>
-        <Select
-          label="Choose session type"
-          name="sessionType"
-          options={[
-            {
-              value: "Single",
-              title: "Create the session only for the single day",
-            },
-            {
-              value: "Week-Long",
-              title: "Create the session for a whole week",
-            },
-            {
-              value: "Semester-Long",
-              title: "Create the session for the whole of current semester",
-            },
-            {
-              value: "Custom",
-              title: "Create the session on custom dates",
-            },
-          ]}
-          onChange={handleChange}
-          value={sessionData.sessionType}
-        />
-        <br></br>
-        {sessionData.sessionType === "Single" && (
+        {!previewMode && (
           <div>
+            <Select
+              label="Select Subject"
+              name="subject"
+              options={
+                user
+                  ? user.subjectsTeaching
+                  : ["No Subjects.Please add more via your profile"]
+              }
+              onChange={handleChange}
+              value={sessionData.subject || ""}
+            />
+            <br></br>
             <label className="block text-sm font-medium mb-1">
-              Select date
+              Select time slot
             </label>
-            <input
-              type="date"
-              onChange={(e) =>
+            <TimeRangePicker
+              onTimeSelect={(time) => {
                 setSessionData({
                   ...sessionData,
-                  dates: [e.target.value],
-                })
-              }
-              className="p-2 border rounded w-full"
+                  timeSlot: {
+                    startTime: time.startTime,
+                    endTime: time.endTime,
+                  },
+                });
+              }}
             />
-          </div>
-        )}
-        {sessionData.sessionType === "Week-Long" && (
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Select The Start Date for the classes to start for that whole week
-            </label>
-            <input
-              type="date"
-              onChange={(e) => handleWeekLong(e)}
-              className="p-2 border rounded w-full"
-            />
-          </div>
-        )}
-        {sessionData.sessionType === "Semester-Long" && (
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              Select the days for the classes to be scheduled
-            </label>
-            <MultiDropDown
+            <br></br>
+            <Select
+              label="Choose session type"
+              name="sessionType"
               options={[
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday",
-                "Sunday",
+                {
+                  value: "Single",
+                  title: "Create the session only for the single day",
+                },
+                {
+                  value: "Week-Long",
+                  title: "Create the session for a whole week",
+                },
+                {
+                  value: "Semester-Long",
+                  title: "Create the session for the whole of current semester",
+                },
+                {
+                  value: "Custom",
+                  title: "Create the session on custom dates",
+                },
               ]}
-              defaultOptionText="Select the day(s)"
-              selectedOptionText="Selected Days are"
-              onSelectionChange={handleSemesterLong}
+              onChange={handleChange}
+              value={sessionData.sessionType}
+            />
+            <br></br>
+            {sessionData.sessionType === "Single" && (
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Select date
+                </label>
+                <input
+                  type="date"
+                  onChange={(e) =>
+                    setSessionData({
+                      ...sessionData,
+                      dates: [e.target.value],
+                    })
+                  }
+                  className="p-2 border rounded w-full"
+                />
+              </div>
+            )}
+            {sessionData.sessionType === "Week-Long" && (
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Select The Start Date for the classes to start for that whole
+                  week
+                </label>
+                <input
+                  type="date"
+                  onChange={(e) => handleWeekLong(e)}
+                  className="p-2 border rounded w-full"
+                />
+              </div>
+            )}
+            {sessionData.sessionType === "Semester-Long" && (
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Select the days for the classes to be scheduled
+                </label>
+                <MultiDropDown
+                  options={[
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                    "Sunday",
+                  ]}
+                  defaultOptionText="Select the day(s)"
+                  selectedOptionText="Selected Days are"
+                  onSelectionChange={handleSemesterLong}
+                />
+              </div>
+            )}
+            {/* TODO: CUSTOM DATES */}
+            <br></br>
+            <Select
+              label="Select Classroom"
+              name="classroom"
+              options={clsrooms.map((cls) => cls.name)}
+              onChange={handleChange}
+              value={sessionData.classroom || ""}
+            />
+            <br></br>
+            <Button
+              label="Confirm"
+              name="confirm"
+              onClick={() => setPreviewMode(true)}
             />
           </div>
         )}
-        {/* TODO: CUSTOM DATES */}
-        <br></br>
-        <Select
-          label="Select Classroom"
-          name="classroom"
-          options={clsrooms.map((cls) => cls.name)}
-          onChange={handleChange}
-          value={sessionData.classroom || ""}
-        />
-        <br></br>
-        <Button label="Confirm" name="confirm"  />
+        {previewMode && (
+          <div className="p-6 border rounded-xl shadow-lg bg-white space-y-4">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="font-bold">📚 Subject:</span>
+                <span>{sessionData.subject || "Not selected"}</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="font-bold">🕒 Time Slot:</span>
+                <span>
+                  {sessionData.timeSlot.startTime || "N/A"} -{" "}
+                  {sessionData.timeSlot.endTime || "N/A"}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="font-bold">📅 Session Type:</span>
+                <span>{sessionData.sessionType}</span>
+              </div>
+
+              <div className="flex items-start gap-2">
+                <span className="font-bold">📋 Dates:</span>
+                <div className="ml-2">
+                  {sessionData.dates.length > 0 ? (
+                    <ul className="list-disc pl-4">
+                      {sessionData.dates.map((date, index) => (
+                        <li key={index}>{date}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <span>No dates selected</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="font-bold">🏫 Classroom:</span>
+                <span>{sessionData.classroom || "Not selected"}</span>
+              </div>
+            </div>
+
+            <div className="flex justify-between mt-6">
+              <button
+                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 w-1/3"
+                onClick={handleSubmit}
+              >
+                ✅ Confirm
+              </button>
+              <button
+                className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 w-1/3"
+                onClick={() => setPreviewMode(false)}
+              >
+                🔄 Go Back
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
