@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+var mongoose = require("mongoose");
 
 const sessionSchema = new mongoose.Schema({
   sessionName: {
@@ -49,4 +49,4 @@ const sessionSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("Session", sessionSchema);
+module.exports = mongoose.model("Session", sessionSchema);
