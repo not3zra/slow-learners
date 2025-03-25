@@ -14,8 +14,8 @@ export default function Select({ label, name, options = [], value, onChange }) {
           Select an option
         </option>
         {options.map((option, index) => (
-          <option key={index} value={option}>
-            {option}
+          <option key={index} value={option.value || option } title={option.title || ""}>
+            {option.value || option}
           </option>
         ))}
       </select>
