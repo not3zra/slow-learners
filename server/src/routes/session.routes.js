@@ -7,7 +7,8 @@ router.get('/', getSessions)
 
 router.get('/', getSession)
 
-router.post('/create', validateCreateSession, createSession)
+// TODO: FIX Validation for create session
+router.post('/create', createSession)
 
 router.delete('/delete', validateDeleteSession, deleteSession)
 

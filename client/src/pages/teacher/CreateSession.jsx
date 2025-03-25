@@ -5,13 +5,16 @@ import {
   Select,
   TimeRangePicker,
   Button,
+  Input,
 } from "../../components";
 
 export default function CreateSession() {
   const [previewMode, setPreviewMode] = useState(false);
+  const [submissionMessage, setSubmissionMessage] = useState(null); // For feedback
 
   const [user, setUser] = useState(null);
   const [clsrooms, setClsRooms] = useState([]);
+
   useEffect(() => {
     axios
       .get("http://localhost:5000/auth/verify", { withCredentials: true })
@@ -38,6 +41,7 @@ export default function CreateSession() {
     sessionType: "Single",
     dates: [],
     classroom: undefined,
+    maxSeats: 0,
   });
 
   const handleChange = (e) => {
@@ -112,8 +116,28 @@ export default function CreateSession() {
   };
 
   const handleSubmit = () => {
-    console.log("Session Data:", sessionData);
-    // Submit logic goes here
+    var finalData = {
+      ...sessionData,
+      maxSeats: parseInt(sessionData.maxSeats),
+      sessionName: `${sessionData.subject}-${sessionData.sessionType}-${sessionData.timeSlot.startTime}-${sessionData.timeSlot.endTime}`,
+      teacherId: user._id,
+    };
+    axios
+      .post("http://localhost:5000/api/sessions/create", finalData, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setSubmissionMessage({
+          type: "success",
+          text: "Session created successfully!",
+        });
+      })
+      .catch((error) => {
+        setSubmissionMessage({
+          type: "error",
+          text: "Error creating session. Please try again." + error.message,
+        });
+      });
   };
 
   // TODO: Fetch available Classrooms based on the session date and times
@@ -124,6 +148,17 @@ export default function CreateSession() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
       <div className="bg-white w-full max-w-4xl p-6 rounded-lg shadow-lg">
+        {submissionMessage && (
+          <div
+            className={`text-center p-3 rounded-lg mb-4 ${
+              submissionMessage.type === "success"
+                ? "bg-green-100 text-green-600"
+                : "bg-red-100 text-red-600"
+            }`}
+          >
+            {submissionMessage.text}
+          </div>
+        )}
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-blue-600">
             {previewMode ? "Review your selections" : "Create a Session"}
@@ -244,6 +279,13 @@ export default function CreateSession() {
               value={sessionData.classroom || ""}
             />
             <br></br>
+            <Input
+              name="maxSeats"
+              value={sessionData.maxSeats}
+              onChange={handleChange}
+              placeholder="Enter capacity"
+            />
+            <br></br>
             <Button
               label="Confirm"
               name="confirm"
@@ -290,6 +332,11 @@ export default function CreateSession() {
               <div className="flex items-center gap-2">
                 <span className="font-bold">🏫 Classroom:</span>
                 <span>{sessionData.classroom || "Not selected"}</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="font-bold">🪑 Maximum Seats:</span>
+                <span>{sessionData.maxSeats || "Not specified"}</span>
               </div>
             </div>
 
