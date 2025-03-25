@@ -39,7 +39,7 @@ export default function TeacherDashboard() {
             <div className="bg-white shadow-md rounded-xl p-4">
                 <h2 className="text-xl font-semibold text-blue-500 mb-4">Actions</h2>
                 <Link to="/teacher/create-session" className="block bg-blue-500 text-white text-center py-2 px-4 rounded-md mb-2">Create New Session</Link>
-                <Link to="/teacher/upload-material" className="block bg-green-500 text-white text-center py-2 px-4 rounded-md">Upload Materials</Link>
+                <Link to="/teacher/view-session" className="block bg-green-500 text-white text-center py-2 px-4 rounded-md">View Sessions</Link>
             </div>
 
             {/* Profile and Settings */}

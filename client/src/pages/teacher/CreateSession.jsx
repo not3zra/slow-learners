@@ -119,7 +119,7 @@ export default function CreateSession() {
     var finalData = {
       ...sessionData,
       maxSeats: parseInt(sessionData.maxSeats),
-      sessionName: `${sessionData.subject}-${sessionData.sessionType}-${sessionData.timeSlot.startTime}-${sessionData.timeSlot.endTime}`,
+      sessionName: `${sessionData.subject}-${sessionData.sessionType}-${sessionData.timeSlot.startTime}-${sessionData.timeSlot.endTime}-${sessionData.classroom}`,
       teacherId: user._id,
     };
     axios

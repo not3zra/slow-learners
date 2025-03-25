@@ -33,7 +33,6 @@ export default function TeacherProfile() {
   const [newSubject, setNewSubject] = useState("");
 
   const handleAddSubject = () => {
-    console.log(newSubject);
     if (newSubject.trim()) {
       axios
         .put(

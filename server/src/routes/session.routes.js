@@ -3,9 +3,9 @@ const { validateCreateSession, validateDeleteSession } = require('../middlewares
 const { getSessions, createSession, deleteSession, getSession } = require('../controllers/session.controller');
 
 const router = express.Router();
-router.get('/', getSessions)
+router.get('/list', getSessions)
 
-router.get('/', getSession)
+router.get('/sessions/:id', getSession)
 
 // TODO: FIX Validation for create session
 router.post('/create', createSession)
