@@ -40,7 +40,7 @@ export default function TeacherDashboard() {
               (a, b) => new Date(a.date) - new Date(b.date)
             );
 
-            setUpcoming(sortedSessions);
+            setUpcoming(sortedSessions.slice(0,sortedSessions.length<5?sortedSessions.length:5)); // Only show 5 upcoming sessions
           })
           .catch((error) => console.log(error));
       })
