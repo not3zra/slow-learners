@@ -8,6 +8,8 @@ import {
   Input,
 } from "../../components";
 
+import DatePicker from "react-multi-date-picker";
+
 export default function CreateSession() {
   const [previewMode, setPreviewMode] = useState(false);
   const [submissionMessage, setSubmissionMessage] = useState(null); // For feedback
@@ -113,6 +115,15 @@ export default function CreateSession() {
       return result.map((date) => date.toISOString().split("T")[0]); // Return in YYYY-MM-DD format
     };
     setSessionData({ ...sessionData, dates: getSemesterDates(daysSelected) });
+  };
+
+  const handleCustomDates = (dates) => {
+    // new Date(dates[0].toString()).toISOString().split("T")[0]
+    var result = [];
+    dates.forEach((date) => {
+      result.push(new Date(date.toString()).toISOString().split("T")[0]);
+    });
+    setSessionData({ ...sessionData, dates: result });
   };
 
   const handleSubmit = () => {
@@ -269,7 +280,14 @@ export default function CreateSession() {
                 />
               </div>
             )}
-            {/* TODO: CUSTOM DATES */}
+            {sessionData.sessionType === "Custom" && (
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Select the date(s) for the session to be scheduled
+                </label>
+                <DatePicker multiple onChange={handleCustomDates} sort />
+              </div>
+            )}
             <br></br>
             <Select
               label="Select Classroom"
@@ -279,6 +297,7 @@ export default function CreateSession() {
               value={sessionData.classroom || ""}
             />
             <br></br>
+            <label className="block text-sm font-medium mb-1">Max Seats</label>
             <Input
               name="maxSeats"
               value={sessionData.maxSeats}
