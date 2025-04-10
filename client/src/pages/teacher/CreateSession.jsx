@@ -26,15 +26,6 @@ export default function CreateSession() {
       .catch(() => {
         console.log("User not authenticated");
       });
-    // TODO: Fetch only available classrooms
-    axios
-      .get("http://localhost:5000/api/classrooms/list", {
-        withCredentials: true,
-      })
-      .then((response) => setClsRooms(response.data.classrooms))
-      .catch(() => {
-        console.log("Error");
-      });
   }, []);
 
   const [sessionData, setSessionData] = useState({
@@ -45,6 +36,26 @@ export default function CreateSession() {
     classroom: undefined,
     maxSeats: 0,
   });
+
+  useEffect(() => {
+    if (sessionData.dates.length > 0) {
+      axios
+        .get("http://localhost:5000/api/classrooms/available", {
+          params: {
+            dates: sessionData.dates,
+            startTime: sessionData.timeSlot.startTime,
+            endTime: sessionData.timeSlot.endTime,
+          },
+          withCredentials: true,
+        })
+        .then((response) => {
+          setClsRooms(response.data.availableClsrooms);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [sessionData.dates]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -118,7 +129,6 @@ export default function CreateSession() {
   };
 
   const handleCustomDates = (dates) => {
-    // new Date(dates[0].toString()).toISOString().split("T")[0]
     var result = [];
     dates.forEach((date) => {
       result.push(new Date(date.toString()).toISOString().split("T")[0]);
@@ -150,9 +160,6 @@ export default function CreateSession() {
         });
       });
   };
-
-  // TODO: Fetch available Classrooms based on the session date and times
-  useEffect(() => {}, [sessionData.dates]);
 
   useEffect(() => console.log(sessionData), [sessionData]);
 
