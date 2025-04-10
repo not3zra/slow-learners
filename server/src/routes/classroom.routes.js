@@ -4,12 +4,14 @@ const Classroom = require("../models/classroom.model");
 const {
   fetchAll,
   deleteClass,
+  fetchAvailable,
 } = require("../controllers/classroom.controller");
 
 const router = express.Router();
 
 // Fetch all classrooms from the database
 router.get("/list", fetchAll);
+router.get("/available", fetchAvailable);
 
 // TODO: Authorize before creation
 
