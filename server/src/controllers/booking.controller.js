@@ -12,7 +12,7 @@ exports.getBookings = async(req,res) => {
 
 exports.getBookingBySessionId =  async(req,res)=>{
     try {
-        const booking = await Booking.find({sessionId:req.params.sessionId}).populate('sessionId').populate('studentID')
+        const booking = await Booking.find({sessionId:req.params.sessionId}).populate('sessionId').populate('studentId')
         res.json(booking);
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -30,10 +30,20 @@ exports.createBooking = async (req,res) =>{
         if(session.maxSeats<=0){
             return res.status(404).json({ message: "Session is full" });
         }
+        const existingBooking = await Booking.findOne({
+            sessionId: req.body.sessionId,
+            studentId: req.body.studentId,
+            status: 'booked'
+        });
+        if (existingBooking) {
+            return res.status(400).json({ message: "Student has already booked this session" });
+        }
+        
         else{
             const booking = new Booking(req.body);
             await booking.save();
             session.maxSeats-=1;
+            await session.save();
             res.status(201).json({success: true, data: booking, message: "Booking successful"});
         }  
         } catch (error) {
@@ -52,7 +62,7 @@ exports.cancelBooking = async (req,res) =>{
         if(booking.status=='canceled'){
             return res.status(404).json({ message: "Booking is already canceled" });
         }
-        const session = Session.findByIdAndUpdate(booking.sessionId,{$inc:{maxSeats:1}});
+        const session = await Session.findByIdAndUpdate(booking.sessionId,{$inc:{maxSeats:1}});
         if(!session){
             return res.status(404).json({ message: "Session not found" });
         }
