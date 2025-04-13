@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import "./Login.css";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
@@ -8,14 +9,20 @@ export default function LoginPage() {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
+    // Handle login form submission
     const handleLogin = async (e) => {
         e.preventDefault();
+        if (!email || !password) {
+            setError("Please fill in both fields");
+            return;
+        }
+
         try {
-            const response = await axios.post("http://localhost:5000/api/users/login", 
-                { email, password }, 
-                { withCredentials: true } 
+            const response = await axios.post("http://localhost:5000/api/users/login",
+                { email, password },
+                { withCredentials: true }
             );
-            const { role } = response.data.user; 
+            const { role } = response.data.user;
             if (role === "teacher") {
                 navigate("/teacher/dashboard");
             } else if (role === "student") {
@@ -29,35 +36,47 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <form
-                onSubmit={handleLogin}
-                className="bg-white shadow-md rounded-lg p-8 w-full max-w-sm"
-            >
-                <h1 className="text-2xl font-bold text-center mb-4">Login</h1>
-                {error && <p className="text-red-500 text-center mb-2">{error}</p>}
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md mb-2"
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="w-full p-2 border border-gray-300 rounded-md mb-4"
-                    required
-                />
-                <button
-                    type="submit"
-                    className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600"
-                >
+        <div className="login-container">
+            <form onSubmit={handleLogin} className="login-form" autoComplete="off">
+                <h1>Login</h1>
+
+                {error && <p className="error-message" role="alert">{error}</p>}
+
+                <div className="form-group">
+                    <label htmlFor="email" className="input-label">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter your email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="input-field"
+                        required
+                        aria-label="Email address"
+                    />
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="password" className="input-label">Password</label>
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="input-field"
+                        required
+                        aria-label="Password"
+                    />
+                </div>
+
+                <button type="submit" className="submit-btn">
                     Login
                 </button>
+
+                <div className="signup-redirect">
+                    Don’t have an account? <Link to="/signup">Sign up</Link>
+                </div>
             </form>
         </div>
     );
