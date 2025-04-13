@@ -9,6 +9,7 @@ import TeacherProfile from "./pages/teacher/TeacherProfile";
 import ViewSessions from "./pages/teacher/ViewSessions";
 import ViewSingleSession from "./pages/teacher/ViewSingleSession";
 import UploadMaterial from "./pages/teacher/UploadMaterial";
+import SignupPage from "./pages/Signup";
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} /> 
         <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
         <Route path="/teacher/create-session" element={<CreateSession />} />
         <Route path="/teacher/profile" element={<TeacherProfile />} />
@@ -28,4 +30,6 @@ export default function App() {
       </Routes>
     </Router>
   );
+
 }
+
