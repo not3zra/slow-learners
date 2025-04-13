@@ -17,7 +17,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} /> 
+        <Route path="/signup" element={<SignupPage />} />
         <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
         <Route path="/teacher/create-session" element={<CreateSession />} />
         <Route path="/teacher/profile" element={<TeacherProfile />} />
@@ -26,10 +26,11 @@ export default function App() {
           path="/teacher/view-session/:id"
           element={<ViewSingleSession />}
         />
-        <Route path="/teacher/session/:id/upload-material" element={<UploadMaterial />} />
+        <Route
+          path="/teacher/session/:id/upload-material/:date"
+          element={<UploadMaterial />}
+        />
       </Routes>
     </Router>
   );
-
 }
-

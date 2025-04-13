@@ -46,13 +46,15 @@ export default function ViewSingleSession() {
   };
 
   const handleDayClick = (clickedDate) => {
-    const clickedDateStr = clickedDate.toISOString().split("T")[0];
+    console.log(session.dates);
+    // The clickedDate is off by 1 date, so we need to manually increasing the day by 1
+    const clickedDateStr = new Date(clickedDate.getFullYear(), clickedDate.getMonth(),  clickedDate.getDate() + 1).toISOString().split("T")[0];
     if (session.dates.includes(clickedDateStr)) setDate(clickedDateStr);
   };
 
   const handleClick = (e) => {
     if(e.target.name==="upload-materials")
-        navigate(`/teacher/session/${session._id}/upload-material`);
+        navigate(`/teacher/session/${session._id}/upload-material/${date}`);
     // if(e.target.name==="mark-attendance")
     //     navigate()
   }
