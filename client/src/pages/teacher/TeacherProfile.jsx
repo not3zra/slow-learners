@@ -161,6 +161,7 @@ export default function TeacherProfile() {
   });
 
   const [newSubject, setNewSubject] = useState("");
+  const [newSubjectCode, setNewSubjectCode] = useState("");
 
   useEffect(() => {
     axios
@@ -192,15 +193,19 @@ export default function TeacherProfile() {
   };
 
   const handleSubjectChange = (field, value) => {
+    if(field === "subjectCode")
+      setNewSubjectCode(value);
+    else
     setNewSubject(value);
   };
 
   const addSubject = () => {
     if (newSubject.trim()) {
+      const sub =  newSubjectCode.trim() +" - "+ newSubject.trim();
         axios
           .put(
             `http://localhost:5000/api/users/teacher/${profile.id}/add-subject`,
-            { subject: newSubject.trim() },
+            { subject: sub },
             { withCredentials: true }
           )
           .then((response) => {
@@ -209,9 +214,10 @@ export default function TeacherProfile() {
           .catch((error) => console.log(error));
       setProfile({
         ...profile,
-        subjects: [...profile.subjects, ...newSubject],
+        subjects: [...profile.subjects, sub],
       });
       setNewSubject("");
+      setNewSubjectCode("");
     }
   };
 
@@ -460,6 +466,18 @@ export default function TeacherProfile() {
                           }
                           className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
                           placeholder="e.g. Web Development"
+                        />
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Subject Code
+                        </label>
+                        <input
+                          type="text"
+                          value={newSubjectCode}
+                          onChange={(e) =>
+                            handleSubjectChange("subjectCode", e.target.value)
+                          }
+                          className="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                          placeholder="e.g. PMCA601P"
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-3">
