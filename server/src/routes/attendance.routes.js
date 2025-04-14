@@ -6,7 +6,7 @@ router.post("/", attendanceController.markAttendance);
 
 router.get("/", attendanceController.getAllAttendance);
 
-router.delete("/delete/:studentId/:sessionId", attendanceController.deleteAttendance);
+router.delete("/delete/student/:studentId/session/:sessionId", attendanceController.deleteAttendance);
 
 router.get("/session/:sessionId", attendanceController.getSessionAttendance);
 

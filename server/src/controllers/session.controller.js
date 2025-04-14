@@ -27,11 +27,36 @@ exports.getSessions= async (req, res) => {
         if (!session) {
             return res.status(404).json({ message: "Session not found" });
         }
-        res.status(201).json({session: session})
+        res.status(200).json({session: session})
         } catch (error) {
             res.status(500).json({ message: error.message })
         }
  }
+
+ // Get sessions by programme
+ exports.getSessionsByProgramme = async (req, res) => {
+    try {
+        const { name } = req.query;
+        if (!name) {
+            return res.status(400).json({ message: "Programme name is required" });
+        }
+
+        console.log(`Querying for sessions with programme: ${name}`);
+
+        // Correct query targeting 'programme' field, not '_id'
+        const sessions = await Session.find({ programme: name });
+
+        if (sessions.length === 0) {
+            return res.status(404).json({ message: "No sessions found for this programme" });
+        }
+
+        res.status(200).json({ sessions });
+    } catch (error) {
+        console.error(error);  // Log the error for debugging purposes
+        res.status(500).json({ message: error.message });
+    }
+};
+
 
 exports.createSession = async (req, res)=>{
          try {

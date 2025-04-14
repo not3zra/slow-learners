@@ -97,6 +97,7 @@ exports.validateCreateSession = [
   body('classroom').notEmpty().withMessage('Classroom is required'),
   body('maxSeats').isInt({ min: 1 }).withMessage('Max seats must be a positive number'),
   body('teacherId').isMongoId().withMessage('Invalid teacher ID'),
+  body('programme').notEmpty().withMessage('Programme is required').isString().withMessage('Programme must be a string'),
 
   async (req, res, next) => {
     const errors = validationResult(req);
@@ -106,6 +107,7 @@ exports.validateCreateSession = [
     next();
   }
 ];
+
 
 // ✅ Delete Session
 exports.validateDeleteSession = [
