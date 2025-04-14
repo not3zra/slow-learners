@@ -10,6 +10,7 @@ import ViewSessions from "./pages/teacher/ViewSessions";
 import ViewSingleSession from "./pages/teacher/ViewSingleSession";
 import UploadMaterial from "./pages/teacher/UploadMaterial";
 import SignupPage from "./pages/Signup";
+import StudentDashboard from "./pages/student/StudentDashboard";
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
           path="/teacher/session/:id/upload-material/:date"
           element={<UploadMaterial />}
         />
+        <Route path="/student/dashboard" element={<StudentDashboard />} />
       </Routes>
     </Router>
   );
