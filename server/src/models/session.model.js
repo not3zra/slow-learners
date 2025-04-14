@@ -13,11 +13,11 @@ const sessionSchema = new mongoose.Schema({
   },
   timeSlot: {
     startTime: {
-      type: String, // Storing as string (e.g., "10:00 AM") for flexibility
+      type: String,
       required: true,
     },
     endTime: {
-      type: String, // Same as startTime
+      type: String,
       required: true,
     },
   },
@@ -27,7 +27,7 @@ const sessionSchema = new mongoose.Schema({
     required: true,
   },
   dates: {
-    type: [String], // Array of dates in 'YYYY-MM-DD' format
+    type: [String],
     required: true,
   },
   classroom: {
@@ -42,6 +42,11 @@ const sessionSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
+  },
+  programme: {
+    type: String,
+    required: true,
+    trim: true,
   },
   createdAt: {
     type: Date,
