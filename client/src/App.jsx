@@ -27,7 +27,7 @@ export default function App() {
         <Route path="/teacher/profile" element={<TeacherProfile />} />
         <Route path="/teacher/view-sessions" element={<ViewSessions />} />
         <Route
-            path="/teacher/session/:sessionId/attendance"
+            path="/teacher/session/:sessionId/attendance/:date"
             element={<TakeAttendance />}
         />
 

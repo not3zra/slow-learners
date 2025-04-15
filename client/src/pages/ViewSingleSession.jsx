@@ -63,7 +63,7 @@ export default function ViewSingleSession({ role }) {
     if(e.target.name==="upload-materials")
         navigate(`/teacher/session/${session._id}/upload-material/${date}`);
     if(e.target.name==="mark-attendance")
-        navigate(`/teacher/session/${session._id}/attendance`);
+        navigate(`/teacher/session/${session._id}/attendance/${date}`);
   }
 
 

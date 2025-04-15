@@ -1,21 +1,24 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Button from "../../components/Button";
-import {useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function TakeAttendance() {
-    const navigate = useNavigate();
+    const navigate = useNavigate();    
+    const { sessionId, date: sessionDate } = useParams(); // ✅ get date from params
     const [user, setUser] = useState(null);
     const [sessions, setSessions] = useState([]);
-    const { sessionId } = useParams();
     const [bookingList, setBookingList] = useState([]);
     const [statusMessage, setStatusMessage] = useState("");
     const [markedAttendance, setMarkedAttendance] = useState({});
     const [tempAttendance, setTempAttendance] = useState({});
 
     useEffect(() => {
-        if (!sessionId) return;
-        axios.get(`http://localhost:5000/api/attendance/session/${sessionId}`, { withCredentials: true })
+        if (!sessionId || !sessionDate) return;
+        axios.get(`http://localhost:5000/api/attendance/session/${sessionId}`, {
+            params: { date: sessionDate },
+            withCredentials: true,
+        })
             .then(response => {
                 const statusMap = {};
                 response.data.forEach(entry => {
@@ -24,7 +27,7 @@ export default function TakeAttendance() {
                 setMarkedAttendance(statusMap);
             })
             .catch(() => {});
-    }, [sessionId]);
+    }, [sessionId, sessionDate]);
 
     useEffect(() => {
         axios.get("http://localhost:5000/auth/verify", { withCredentials: true })
@@ -36,7 +39,10 @@ export default function TakeAttendance() {
 
     useEffect(() => {
         if (!user || !user._id) return;
-        axios.get("http://localhost:5000/api/sessions/list", { params: { teacherId: user._id }, withCredentials: true })
+        axios.get("http://localhost:5000/api/sessions/list", { 
+            params: { teacherId: user._id }, 
+            withCredentials: true 
+        })
             .then(response => {
                 setSessions(response.data.sessions || response.data);
             })
@@ -74,7 +80,10 @@ export default function TakeAttendance() {
             for (const studentId of Object.keys(tempAttendance)) {
                 await axios.delete(
                     `http://localhost:5000/api/attendance/delete/${studentId}/${sessionId}`,
-                    { withCredentials: true }
+                    {
+                        params: { date: sessionDate },
+                        withCredentials: true,
+                    }
                 );
             }
 
@@ -84,6 +93,7 @@ export default function TakeAttendance() {
                     {
                         student: studentId,
                         session: sessionId,
+                        date: sessionDate, 
                         status: status,
                         markedBy: user._id,
                     },
