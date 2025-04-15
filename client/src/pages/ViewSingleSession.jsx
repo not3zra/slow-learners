@@ -4,9 +4,9 @@ import axios from "axios";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./SessionCalender.css";
-import { Button } from "../../components";
+import { Button } from "../components";
 
-export default function ViewSingleSession() {
+export default function ViewSingleSession({ role }) {
   const { id } = useParams();
   const [session, setSession] = useState(null);
   const [date, setDate] = useState(0);
@@ -48,17 +48,22 @@ export default function ViewSingleSession() {
   const handleDayClick = (clickedDate) => {
     console.log(session.dates);
     // The clickedDate is off by 1 date, so we need to manually increasing the day by 1
-    const clickedDateStr = new Date(clickedDate.getFullYear(), clickedDate.getMonth(),  clickedDate.getDate() + 1).toISOString().split("T")[0];
+    const clickedDateStr = new Date(
+      clickedDate.getFullYear(),
+      clickedDate.getMonth(),
+      clickedDate.getDate() + 1
+    )
+      .toISOString()
+      .split("T")[0];
     if (session.dates.includes(clickedDateStr)) setDate(clickedDateStr);
   };
 
   const handleClick = (e) => {
-    if(e.target.name==="upload-materials")
-        navigate(`/teacher/session/${session._id}/upload-material/${date}`);
+    if (e.target.name === "upload-materials")
+      navigate(`/teacher/session/${session._id}/upload-material/${date}`);
     // if(e.target.name==="mark-attendance")
     //     navigate()
-  }
-
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
@@ -80,6 +85,14 @@ export default function ViewSingleSession() {
             <strong>🪑 Maximum Seats:</strong>{" "}
             {session.maxSeats || "Not specified"}
           </div>
+          <div>
+            <strong>🪑 Booked Seats:</strong>{" "}
+            {session.bookedSeats || "Not specified"}
+          </div>
+          <div>
+            <strong>🪑 Available Seats:</strong>{" "}
+            {session.maxSeats - session.bookedSeats || "Not specified"}
+          </div>
         </div>
 
         <div className="p-4">
@@ -89,20 +102,45 @@ export default function ViewSingleSession() {
           <Calendar tileContent={tileContent} onClickDay={handleDayClick} />
         </div>
 
-        <div className="flex justify-between mt-6">
-          <Button
-            label="📝 Mark Attendance"
-            name="mark-attendance"
-            onClick={handleClick}
-            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg w-1/2"
-          />
-          <Button
-            label="📁 Upload Materials"
-            name="upload-materials"
-            onClick={handleClick}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-1/2"
-          />
-        </div>
+        {role === "teacher" ? (
+          <div className="flex justify-between mt-6">
+            <Button
+              label="📝 Mark Attendance"
+              name="mark-attendance"
+              onClick={handleClick}
+              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg w-1/2"
+            />
+            <Button
+              label="📁 Upload Materials"
+              name="upload-materials"
+              onClick={handleClick}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-1/2"
+            />
+          </div>
+        ) : (
+          <div className="flex justify-between mt-6">
+            <Button
+              label="👀 View Attendance"
+              name="view-attendance"
+              onClick={() =>
+                navigate(
+                  `/student/session/${session._id}/view-attendance/${date}`
+                )
+              }
+              className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg w-1/2"
+            />
+            <Button
+              label="📄 View Materials"
+              name="view-materials"
+              onClick={() =>
+                navigate(
+                  `/student/session/${session._id}/view-materials/${date}`
+                )
+              }
+              className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg w-1/2"
+            />
+          </div>
+        )}
       </div>
     </div>
   );

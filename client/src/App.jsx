@@ -6,8 +6,8 @@ import TeacherDashboard from "./pages/teacher/TeacherDashboard";
 import LoginPage from "./pages/Login";
 import CreateSession from "./pages/teacher/CreateSession";
 import TeacherProfile from "./pages/teacher/TeacherProfile";
-import ViewSessions from "./pages/teacher/ViewSessions";
-import ViewSingleSession from "./pages/teacher/ViewSingleSession";
+import ViewSessions from "./pages/ViewSessions";
+import ViewSingleSession from "./pages/ViewSingleSession";
 import UploadMaterial from "./pages/teacher/UploadMaterial";
 import SignupPage from "./pages/Signup";
 import StudentDashboard from "./pages/student/StudentDashboard";
@@ -26,7 +26,7 @@ export default function App() {
         <Route path="/teacher/view-sessions" element={<ViewSessions />} />
         <Route
           path="/teacher/view-session/:id"
-          element={<ViewSingleSession />}
+          element={<ViewSingleSession role="teacher"/>}
         />
         <Route
           path="/teacher/session/:id/upload-material/:date"
@@ -35,6 +35,10 @@ export default function App() {
         <Route path="/student/dashboard" element={<StudentDashboard />} />
         <Route path="/student/book-session" element={<SessionBooking />} />
         <Route path="/student/view-sessions" element={<ViewSessions />} />
+        <Route
+          path="/student/view-session/:id"
+          element={<ViewSingleSession role="student"/>}
+        />
       </Routes>
     </Router>
   );
