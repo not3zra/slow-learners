@@ -132,6 +132,9 @@ export default function TeacherDashboard() {
               <Link to="/teacher/profile" className="dashboard-link">
                 <i className="fa-solid fa-pen-to-square"></i> Edit Profile
               </Link>
+               <Link to="/teacher/chat" className="dashboard-link chat">
+            <i className="fa-solid fa-folder-open"></i> View Chats
+          </Link>
             </div>
           </div>
         </div>

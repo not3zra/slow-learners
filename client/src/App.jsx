@@ -15,6 +15,9 @@ import SessionBooking from "./pages/student/SessionBooking";
 import ViewMaterials from "./pages/student/ViewMaterials";
 import TakeAttendance from "./pages/teacher/TakeAttendance";
 import ViewAttendance from "./pages/student/ViewAttendance";
+import ChatBox from "./pages/ChatBox";
+import SelectTeacherChat from "./pages/student/SelectTeacherChat";
+import SelectStudentChat from "./pages/teacher/SelectStudentChat";
 
 export default function App() {
   return (
@@ -50,6 +53,11 @@ export default function App() {
         <Route path="/student/session/:sessionId/view-materials/:date" element={<ViewMaterials />} />
         <Route path="/student/session/:sessionId/view-attendance/" element={<ViewAttendance />} />
 
+        <Route path="/student/chat" element={<SelectTeacherChat />} />
+
+        <Route path="/student/chat/:teacherId" element={<ChatBox />} />
+        <Route path="/teacher/chat" element={<SelectStudentChat />} />
+        <Route path="/teacher/chat/:studentId" element={<ChatBox />} />
       </Routes>
     </Router>
   );

@@ -21,6 +21,8 @@ const attendanceRoutes = require("./src/routes/attendance.routes")
 
 const materialRoutes = require("./src/routes/material.routes")
 
+const chatRoutes = require("./src/routes/chat.routes");
+
 const app = express();
 connectDB();
 
@@ -86,5 +88,6 @@ app.use("/api/attendance",attendanceRoutes)
 
 app.use("/api/materials/", materialRoutes)
 
+app.use("/api/chat", chatRoutes);
 
 app.listen(5000, () => console.log(`Backend is running on port 5000`));

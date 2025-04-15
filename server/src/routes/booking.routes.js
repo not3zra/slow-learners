@@ -1,5 +1,5 @@
 const express=require('express')
-const { getBookings, createBooking, cancelBooking, getBookingBySessionId } = require('../controllers/booking.controller')
+const { getBookings, createBooking, cancelBooking, getBookingBySessionId, getBookingByStudentId } = require('../controllers/booking.controller')
 const { validateCreateBooking, validateCancelBooking } = require('../middlewares/validationMiddleware')
 
 
@@ -7,7 +7,9 @@ const router = express.Router()
 
 router.get("/", getBookings)
 
-router.get("/:sessionId",getBookingBySessionId)
+router.get("/session/:sessionId", getBookingBySessionId)
+
+router.get("/student/:studentId", getBookingByStudentId)
 
 router.post("/create", validateCreateBooking, createBooking)
 

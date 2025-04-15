@@ -19,6 +19,15 @@ exports.getBookingBySessionId =  async(req,res)=>{
         }
 }
 
+exports.getBookingByStudentId =  async(req,res)=>{
+    try {
+        const booking = await Booking.find({studentId:req.params.studentId}).populate('sessionId').populate('studentId')
+        res.json(booking);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+}
+
 exports.createBooking = async (req,res) =>{
     try {
         const {sessionId} = req.body;

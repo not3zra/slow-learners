@@ -131,6 +131,9 @@ export default function StudentDashboard() {
             <Link to="/student/view-sessions" className="dashboard-link view">
               <i className="fa-solid fa-folder-open"></i> View Sessions
             </Link>
+            <Link to="/student/chat" className="dashboard-link chat">
+            <i className="fa-solid fa-folder-open"></i> View Chats
+          </Link>
           </div>
         </div>
       </div>

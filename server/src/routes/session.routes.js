@@ -3,7 +3,8 @@ const { validateCreateSession, validateDeleteSession } = require('../middlewares
 const { getSessions, createSession, deleteSession, getSession, getSessionsByProgramme, getSessionsOfStudent } = require('../controllers/session.controller');
 
 const router = express.Router();
-router.get('/list', getSessions) // get by teacher
+router.get('/list/', getSessions) // get by teacher
+
 router.get('/list/:studentId', getSessionsOfStudent) // get by student
 
 router.get('/programme', getSessionsByProgramme)
