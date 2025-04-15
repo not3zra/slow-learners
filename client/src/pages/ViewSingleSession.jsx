@@ -5,13 +5,14 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./SessionCalender.css";
 import { Button } from "../components";
+import TakeAttendance from "./teacher/TakeAttendance";
 
 export default function ViewSingleSession({ role }) {
+
+  const navigate=useNavigate()
   const { id } = useParams();
   const [session, setSession] = useState(null);
   const [date, setDate] = useState(0);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -59,11 +60,12 @@ export default function ViewSingleSession({ role }) {
   };
 
   const handleClick = (e) => {
-    if (e.target.name === "upload-materials")
-      navigate(`/teacher/session/${session._id}/upload-material/${date}`);
-    // if(e.target.name==="mark-attendance")
-    //     navigate()
-  };
+    if(e.target.name==="upload-materials")
+        navigate(`/teacher/session/${session._id}/upload-material/${date}`);
+    if(e.target.name==="mark-attendance")
+        navigate(`/teacher/session/${session._id}/attendance`);
+  }
+
 
   return (
     <div className="bg-[url('/images/background.png')] bg-cover bg-center min-h-screen flex items-center justify-center p-6">

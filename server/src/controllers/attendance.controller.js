@@ -18,25 +18,40 @@ exports.markAttendance = async (req, res) => {
   }
 };
 
-exports.deleteAttendance = async (req,res)=>{
-    try {
+exports.deleteAttendance = async (req, res) => {
+  try {
+      const { studentId, sessionId } = req.params;
 
-        const { studentId, sessionId } = req.params; 
-        const deletedAttendance = await Attendance.deleteMany({
-            student: studentId,
-            session: sessionId, // Ensure it belongs to the correct session
-        });
+      // Log to verify the studentId and sessionId received in the request
+      console.log(`Deleting attendance for studentId: ${studentId} and sessionId: ${sessionId}`);
 
-        if (deletedAttendance.deletedCount===0) {
-            return res.status(404).json({ message: "Attendance record not found" });
-        }
+      // Find matching records before deletion (for debugging purposes)
+      const attendanceRecords = await Attendance.find({
+          student: studentId,
+          session: sessionId,
+      });
 
-        res.status(200).json({ message: "Attendance deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "Server Error", error: error.message });
-    } 
+      if (attendanceRecords.length === 0) {
+          return res.status(200).json({ message: "No attendance records found for this student and session" });
+      }
 
+      console.log(`Found ${attendanceRecords.length} records to delete`);
+
+      // Delete all matching records
+      const deletedAttendance = await Attendance.deleteMany({
+          student: studentId,
+          session: sessionId,
+      });
+
+      res.status(200).json({
+          message: `Successfully deleted ${deletedAttendance.deletedCount} attendance record(s)`,
+      });
+  } catch (error) {
+      console.error("Error deleting attendance:", error);
+      res.status(500).json({ message: "Server Error", error: error.message });
+  }
 }
+
 
 exports.getAllAttendance =async (req,res)=>{
     try {

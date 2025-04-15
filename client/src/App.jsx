@@ -13,6 +13,7 @@ import SignupPage from "./pages/Signup";
 import StudentDashboard from "./pages/student/StudentDashboard";
 import SessionBooking from "./pages/student/SessionBooking";
 import ViewMaterials from "./pages/student/ViewMaterials";
+import TakeAttendance from "./pages/teacher/TakeAttendance";
 
 export default function App() {
   return (
@@ -25,6 +26,11 @@ export default function App() {
         <Route path="/teacher/create-session" element={<CreateSession />} />
         <Route path="/teacher/profile" element={<TeacherProfile />} />
         <Route path="/teacher/view-sessions" element={<ViewSessions />} />
+        <Route
+            path="/teacher/session/:sessionId/attendance"
+            element={<TakeAttendance />}
+        />
+
         <Route
           path="/teacher/view-session/:id"
           element={<ViewSingleSession role="teacher"/>}
