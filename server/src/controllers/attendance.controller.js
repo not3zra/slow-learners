@@ -82,7 +82,6 @@ exports.getSessionAttendance = async (req, res) => {
 
 exports.getStudentAttendance = async (req, res) => {
   try {
-    console.log("Here")
     const { sessionId, studentId } = req.params;
     const attendance = await Attendance.find({ session: sessionId, student: studentId }).populate("session", "subject schedule");
 

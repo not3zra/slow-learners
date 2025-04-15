@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Chat from "../../components/Chat";
+import Navbar from "../../components/NavBar";
 
 export default function SelectTeacherChat() {
   const [student, setStudent] = useState(null);
   const [sessions, setSessions] = useState([]);
   const [teachers, setTeachers] = useState([]);
   const [chatStates, setChatStates] = useState({});
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
-  // Fetch student data
+  // Get logged-in student
   useEffect(() => {
     setLoading(true);
     axios
       .get("http://localhost:5000/auth/verify", { withCredentials: true })
-      .then((response) => {
-        setStudent(response.data.user);
-      })
+      .then((res) => setStudent(res.data.user))
       .catch((err) => {
         console.error("User not authenticated:", err);
         setError("Failed to authenticate user");
@@ -26,7 +26,7 @@ export default function SelectTeacherChat() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Fetch sessions and teachers
+  // Fetch teachers from student's sessions
   useEffect(() => {
     if (!student) return;
 
@@ -47,42 +47,36 @@ export default function SelectTeacherChat() {
           ),
         ];
 
-        try {
-          const userRes = await axios.get("http://localhost:5000/api/users", {
-            withCredentials: true,
-          });
+        const userRes = await axios.get("http://localhost:5000/api/users", {
+          withCredentials: true,
+        });
 
-          const teacherDetails = userRes.data.filter(
-            (user) => user.role === "teacher" && teacherIds.includes(user._id)
-          );
-          setTeachers(teacherDetails);
+        const teacherDetails = userRes.data.filter(
+          (user) => user.role === "teacher" && teacherIds.includes(user._id)
+        );
+        setTeachers(teacherDetails);
 
-          // Check conversation status for each teacher
-          for (const teacher of teacherDetails) {
-            try {
-              const res = await axios.get(
-                `http://localhost:5000/api/chat/conversation/${student._id}/${teacher._id}`,
-                { withCredentials: true }
-              );
-              setChatStates((prev) => ({
-                ...prev,
-                [teacher._id]: res.data.length > 0,
-              }));
-            } catch {
-              setChatStates((prev) => ({
-                ...prev,
-                [teacher._id]: false,
-              }));
-            }
+        for (const teacher of teacherDetails) {
+          try {
+            const chatRes = await axios.get(
+              `http://localhost:5000/api/chat/conversation/${student._id}/${teacher._id}`,
+              { withCredentials: true }
+            );
+            setChatStates((prev) => ({
+              ...prev,
+              [teacher._id]: chatRes.data.length > 0,
+            }));
+          } catch {
+            setChatStates((prev) => ({
+              ...prev,
+              [teacher._id]: false,
+            }));
           }
-        } catch (userErr) {
-          console.error("Failed to fetch teachers:", userErr);
-          setError("Failed to load teachers");
         }
       })
       .catch((err) => {
-        console.error("Booking fetch error:", err);
-        setError("Failed to load bookings");
+        console.error("Failed to load bookings or teachers:", err);
+        setError("Failed to load teacher data");
       })
       .finally(() => setLoading(false));
   }, [student]);
@@ -92,31 +86,40 @@ export default function SelectTeacherChat() {
   }
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Chat with a Teacher</h1>
-      {loading ? (
-        <div className="text-center p-4">Loading...</div>
-      ) : teachers.length === 0 ? (
-        <div className="text-center p-4 text-gray-500">No teachers found</div>
-      ) : (
-        <ul className="space-y-3">
-          {teachers
-            .filter((teacher) => teacher && teacher._id)
-            .map((teacher) => (
-              <li
+    <div
+      className="relative min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: "url('/images/background1.png')" }}
+    >
+      <Navbar role={"student"} />
+      <div className="relative z-10 max-w-6xl mx-auto py-12 px-6">
+        <div className="flex gap-4 bg-white bg-opacity-90 rounded-xl shadow-lg p-6">
+          <div className="w-1/3 space-y-2">
+            {teachers.map((teacher) => (
+              <button
                 key={teacher._id}
-                className="p-4 border rounded shadow cursor-pointer hover:bg-gray-100"
-                onClick={() => navigate(`/student/chat/${teacher._id}`)}
+                className={`w-full text-left px-4 py-3 rounded-lg border transition-all duration-200 ${
+                  selectedTeacher?._id === teacher._id
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-100 hover:bg-gray-200"
+                }`}
+                onClick={() => setSelectedTeacher(teacher)}
               >
-                <p className="font-semibold">{teacher.name}</p>
-                <p className="text-sm text-gray-600">{teacher.email}</p>
-                <p className="text-sm mt-2 text-blue-500">
-                  {chatStates[teacher._id] ? "Continue Chat" : "Start Chat"}
-                </p>
-              </li>
+                {teacher.name}
+              </button>
             ))}
-        </ul>
-      )}
+          </div>
+
+          <div className="w-2/3">
+            {selectedTeacher ? (
+              <Chat senderId={student?._id} recipientId={selectedTeacher._id} />
+            ) : (
+              <div className="text-gray-600 text-center mt-10">
+                Select a teacher to start chatting.
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

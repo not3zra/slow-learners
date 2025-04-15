@@ -58,7 +58,11 @@ export default function Navbar({ role }) {
                   View Sessions
                 </Link>
               </li>
-              
+              <li>
+                <Link to="/teacher/chat" className="navbar-link">
+                View Chats
+                </Link>
+              </li>
               <li>
                 <button
                   onClick={handleLogout}

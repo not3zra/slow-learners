@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Chat from "../../components/Chat";
+import Navbar from "../../components/NavBar";
 
 export default function SelectStudentChat() {
   const [teacher, setTeacher] = useState(null);
@@ -21,7 +22,7 @@ export default function SelectStudentChat() {
     if (!teacher?._id) return;
 
     axios
-    .get("http://localhost:5000/api/sessions/list", {
+      .get("http://localhost:5000/api/sessions/list", {
         params: { teacherId: teacher._id },
         withCredentials: true,
       })
@@ -37,9 +38,12 @@ export default function SelectStudentChat() {
       try {
         const all = await Promise.all(
           sessions.map((session) =>
-            axios.get(`http://localhost:5000/api/bookings/session/${session._id}`, {
-              withCredentials: true,
-            })
+            axios.get(
+              `http://localhost:5000/api/bookings/session/${session._id}`,
+              {
+                withCredentials: true,
+              }
+            )
           )
         );
 
@@ -55,38 +59,44 @@ export default function SelectStudentChat() {
 
   // Get unique students
   const uniqueStudents = Array.from(
-    new Map(
-      bookings.map((b) => [b.studentId._id, b.studentId])
-    ).values()
+    new Map(bookings.map((b) => [b.studentId._id, b.studentId])).values()
   );
 
   return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <h2 className="text-xl font-semibold mb-4">Select a Student to Chat</h2>
-      <div className="flex gap-4">
-        <div className="w-1/3 space-y-2">
-          {uniqueStudents.map((student) => (
-            <button
-              key={student._id}
-              className={`block w-full text-left px-4 py-2 rounded border ${
-                selectedStudent?._id === student._id
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-100 hover:bg-gray-200"
-              }`}
-              onClick={() => setSelectedStudent(student)}
-            >
-              {student.name}
-            </button>
-          ))}
-        </div>
+    <div
+      className="relative min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: "url('/images/background1.png')" }}
+    >
+      <Navbar role={"teacher"} />
+      <div className="relative z-10 max-w-6xl mx-auto py-12 px-6">
+        <div className="bg-white bg-opacity-90 backdrop-blur-md rounded-xl shadow-lg p-6 flex gap-6">
+          {/* Student List */}
+          <div className="w-1/3 space-y-3">
+            {uniqueStudents.map((student) => (
+              <button
+                key={student._id}
+                className={`w-full text-left px-4 py-3 rounded-lg border transition-all duration-200 ${
+                  selectedStudent?._id === student._id
+                    ? "bg-blue-600 text-white font-semibold"
+                    : "bg-gray-100 hover:bg-gray-200"
+                }`}
+                onClick={() => setSelectedStudent(student)}
+              >
+                {student.name}
+              </button>
+            ))}
+          </div>
 
-        <div className="w-2/3">
-          {selectedStudent ? (
-            <Chat senderId={teacher._id} recipientId={selectedStudent._id} />
-          ) : (
-            <p>Select a student to start chatting.</p>
-            
-          )}
+          {/* Chat Area */}
+          <div className="w-2/3 bg-white rounded-lg p-4 shadow-md min-h-[300px]">
+            {selectedStudent ? (
+              <Chat senderId={teacher._id} recipientId={selectedStudent._id} />
+            ) : (
+              <p className="text-gray-600 text-center mt-20">
+                Select a student to start chatting.
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>
