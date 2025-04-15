@@ -10,6 +10,6 @@ router.delete("/delete/:studentId/:sessionId", attendanceController.deleteAttend
 
 router.get("/session/:sessionId", attendanceController.getSessionAttendance);
 
-router.get("/student/:studentId", attendanceController.getStudentAttendance);
+router.get("/session/:sessionId/student/:studentId", attendanceController.getStudentAttendance);
 
 module.exports = router;

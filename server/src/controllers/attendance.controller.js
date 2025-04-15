@@ -82,8 +82,9 @@ exports.getSessionAttendance = async (req, res) => {
 
 exports.getStudentAttendance = async (req, res) => {
   try {
-    const { studentId } = req.params;
-    const attendance = await Attendance.find({ student: studentId }).populate("session", "subject schedule");
+    console.log("Here")
+    const { sessionId, studentId } = req.params;
+    const attendance = await Attendance.find({ session: sessionId, student: studentId }).populate("session", "subject schedule");
 
     res.status(200).json(attendance);
   } catch (error) {

@@ -14,6 +14,7 @@ import StudentDashboard from "./pages/student/StudentDashboard";
 import SessionBooking from "./pages/student/SessionBooking";
 import ViewMaterials from "./pages/student/ViewMaterials";
 import TakeAttendance from "./pages/teacher/TakeAttendance";
+import ViewAttendance from "./pages/student/ViewAttendance";
 
 export default function App() {
   return (
@@ -47,6 +48,8 @@ export default function App() {
           element={<ViewSingleSession role="student"/>}
         />
         <Route path="/student/session/:sessionId/view-materials/:date" element={<ViewMaterials />} />
+        <Route path="/student/session/:sessionId/view-attendance/" element={<ViewAttendance />} />
+
       </Routes>
     </Router>
   );

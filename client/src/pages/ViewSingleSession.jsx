@@ -68,7 +68,7 @@ export default function ViewSingleSession({ role }) {
 
 
   return (
-    <div className="bg-[url('/images/background.png')] bg-cover bg-center min-h-screen flex items-center justify-center p-6">
+    <div className="bg-[url('/images/background1.png')] bg-cover bg-center min-h-screen flex items-center justify-center p-6">
       <div className="bg-white w-full max-w-3xl p-8 rounded-lg shadow-xl space-y-8">
         <h1 className="text-4xl font-extrabold text-gray-800 text-center mb-6">
           {session.subject || "Session Details"}
@@ -144,7 +144,7 @@ export default function ViewSingleSession({ role }) {
               name="view-attendance"
               onClick={() =>
                 navigate(
-                  `/student/session/${session._id}/view-attendance/${date}`
+                  `/student/session/${session._id}/view-attendance`
                 )
               }
               className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg flex-1"
