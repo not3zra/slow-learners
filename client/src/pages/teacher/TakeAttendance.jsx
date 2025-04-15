@@ -120,7 +120,7 @@ export default function TakeAttendance() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="bg-[url('/images/background1.png')] bg-cover bg-center min-h-screen flex items-center justify-center p-6">
       <div className="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow-lg">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-blue-700">

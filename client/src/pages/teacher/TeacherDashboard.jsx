@@ -76,9 +76,9 @@ export default function TeacherDashboard() {
                 const parts = val.name.split("-");
                 const subject = parts[0] + " " + parts[1].trim();
                 let type = parts[2];
-                type += parts[2].trim()=="Single"?"":"-Long";
-                const room = type=="Single"?parts[5]:parts[6];
-                console.log(parts)
+                type += parts[2].trim() == "Single" ? "" : "-Long";
+                const room = type == "Single" ? parts[5] : parts[6];
+                console.log(parts);
                 return (
                   <div key={idx} className="session-card-enhanced">
                     <div className="session-header">
@@ -117,15 +117,17 @@ export default function TeacherDashboard() {
           <h2>
             <i className="fa-solid fa-toolbox"></i> Actions
           </h2>
-          <Link to="/teacher/create-session" className="dashboard-link create">
-            <i className="fa-solid fa-plus-circle"></i> Create New Session
-          </Link>
-          <Link to="/teacher/view-sessions" className="dashboard-link view">
-            <i className="fa-solid fa-folder-open"></i> View Sessions
-          </Link>
-          <Link to="/teacher/profile" className="dashboard-link edit">
-            <i className="fa-solid fa-pen-to-square"></i> Edit Profile
-          </Link>
+          <div className="action-links">
+            <Link to="/teacher/create-session" className="dashboard-link">
+              <i className="fa-solid fa-plus-circle"></i> Create New Session
+            </Link>
+            <Link to="/teacher/view-sessions" className="dashboard-link">
+              <i className="fa-solid fa-folder-open"></i> View Sessions
+            </Link>
+            <Link to="/teacher/profile" className="dashboard-link">
+              <i className="fa-solid fa-pen-to-square"></i> Edit Profile
+            </Link>
+          </div>
         </div>
       </div>
     </div>
