@@ -39,7 +39,12 @@ export default function TeacherDashboard() {
               (a, b) => new Date(a.date) - new Date(b.date)
             );
 
-            setUpcoming(sortedSessions.slice(0, sortedSessions.length < 5 ? sortedSessions.length : 5));
+            setUpcoming(
+              sortedSessions.slice(
+                0,
+                sortedSessions.length < 3 ? sortedSessions.length : 3
+              )
+            );
           })
           .catch((error) => console.log(error));
       })
@@ -52,9 +57,7 @@ export default function TeacherDashboard() {
     <div className="teacher-dashboard-container">
       {/* Welcome Section */}
       <div className="welcome-banner">
-        {user && (
-          <h1 className="welcome-heading">Welcome, {user.name}!</h1>
-        )}
+        {user && <h1 className="welcome-heading">Welcome, {user.name}!</h1>}
         <p className="hero-subtitle">
           Manage your sessions and materials effortlessly.
         </p>
@@ -64,39 +67,64 @@ export default function TeacherDashboard() {
       <div className="teacher-section">
         {/* Upcoming Sessions */}
         <div className="teacher-card">
-          <h2>📅 Upcoming Sessions</h2>
+          <h2>
+            <i className="fa-solid fa-calendar-days"></i> Upcoming Sessions
+          </h2>
           {upcoming.length > 0 ? (
-            <div>
-              {upcoming.map((val, idx) => (
-                <div key={idx} className="session-entry">
-                  <h3>{val.name}</h3>
-                  <p>
-                    📆 {val.date} | 🕒 {val.timeSlot.startTime} - {val.timeSlot.endTime}
-                  </p>
-                </div>
-              ))}
+            <div className="upcoming-session-list">
+              {upcoming.map((val, idx) => {
+                const parts = val.name.split("-");
+                const subject = parts[1].trim()
+                let type = parts[2];
+                type += parts[2].trim()=="Single"?"":"-Long";
+                const room = type=="Single"?parts[5]:parts[6];
+                console.log(parts)
+                return (
+                  <div key={idx} className="session-card-enhanced">
+                    <div className="session-header">
+                      <h3 className="session-title">
+                        <i className="fas fa-chalkboard-teacher"></i> {subject}
+                      </h3>
+                      <span className={`badge badge-${type.toLowerCase()}`}>
+                        {type}
+                      </span>
+                    </div>
+                    <div className="session-details">
+                      <p>
+                        <i className="fas fa-calendar-alt"></i> {val.date}
+                      </p>
+                      <p>
+                        <i className="fas fa-clock"></i>{" "}
+                        {val.timeSlot.startTime} - {val.timeSlot.endTime}
+                      </p>
+                      <p>
+                        <i className="fas fa-door-open"></i> {room}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           ) : (
-            <p className="card-content">❌ No upcoming sessions</p>
+            <p className="card-content">
+              <i className="fa-solid fa-xmark-circle"></i> No upcoming sessions
+            </p>
           )}
         </div>
 
         {/* Actions Card */}
         <div className="teacher-card">
-          <h2>🔧 Actions</h2>
+          <h2>
+            <i className="fa-solid fa-toolbox"></i> Actions
+          </h2>
           <Link to="/teacher/create-session" className="dashboard-link create">
-            ➕ Create New Session
+            <i className="fa-solid fa-plus-circle"></i> Create New Session
           </Link>
           <Link to="/teacher/view-sessions" className="dashboard-link view">
-            📂 View Sessions
+            <i className="fa-solid fa-folder-open"></i> View Sessions
           </Link>
-        </div>
-
-        {/* Profile Settings Card */}
-        <div className="teacher-card">
-          <h2>🔒 Profile & Settings</h2>
           <Link to="/teacher/profile" className="dashboard-link edit">
-            ✏️ Edit Profile
+            <i className="fa-solid fa-pen-to-square"></i> Edit Profile
           </Link>
         </div>
       </div>
