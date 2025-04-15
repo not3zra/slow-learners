@@ -35,7 +35,7 @@ export default function CreateSession() {
     dates: [],
     classroom: undefined,
     maxSeats: 0,
-    programme: ""
+    programme: "",
   });
 
   useEffect(() => {
@@ -165,120 +165,144 @@ export default function CreateSession() {
   useEffect(() => console.log(sessionData), [sessionData]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
-      <div className="bg-white w-full max-w-4xl p-6 rounded-lg shadow-lg">
+    <div className="bg-[url('/images/background1.png')] bg-cover bg-center min-h-screen flex items-center justify-center p-6">
+      <div className="bg-white w-full max-w-4xl p-8 rounded-2xl shadow-2xl">
         {submissionMessage && (
           <div
-            className={`text-center p-3 rounded-lg mb-4 ${
+            className={`text-center p-3 rounded-lg mb-6 font-medium ${
               submissionMessage.type === "success"
                 ? "bg-green-100 text-green-600"
                 : "bg-red-100 text-red-600"
             }`}
           >
+            <i
+              className={`fas ${
+                submissionMessage.type === "success"
+                  ? "fa-check-circle"
+                  : "fa-times-circle"
+              } mr-2`}
+            ></i>
             {submissionMessage.text}
           </div>
         )}
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-blue-600">
-            {previewMode ? "Review your selections" : "Create a Session"}
+
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-extrabold text-blue-700 flex items-center justify-center gap-2">
+            <i className="fas fa-calendar-plus"></i>
+            {previewMode ? "Review Your Selections" : "Create a Session"}
           </h1>
         </div>
+
         {!previewMode && (
-          <div>
+          <div className="space-y-6">
             <Select
-              label="Select Subject"
+              label={
+                <span className="flex items-center gap-2 text-sm font-semibold">
+                  <i className="fas fa-book"></i> Select Subject
+                </span>
+              }
               name="subject"
               options={
                 user
                   ? user.subjectsTeaching
-                  : ["No Subjects.Please add more via your profile"]
+                  : ["No Subjects. Please add more via your profile."]
               }
               onChange={handleChange}
               value={sessionData.subject || ""}
             />
-            <br></br>
-            <label className="block text-sm font-medium mb-1">Programme</label>
-            <Input
-              name="programme"
-              value={sessionData.programme}
-              onChange={handleChange}
-              placeholder="Enter programme"
-            />
-            <br></br>
-            <label className="block text-sm font-medium mb-1">
-              Select time slot
-            </label>
-            <TimeRangePicker
-              onTimeSelect={(time) => {
-                setSessionData({
-                  ...sessionData,
-                  timeSlot: {
-                    startTime: time.startTime,
-                    endTime: time.endTime,
-                  },
-                });
-              }}
-            />
-            <br></br>
+
+            <div>
+              <label className="block text-sm font-semibold mb-1 flex items-center gap-2">
+                <i className="fas fa-tags"></i> Programme
+              </label>
+              <Input
+                name="programme"
+                value={sessionData.programme}
+                onChange={handleChange}
+                placeholder="Enter programme"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold mb-1 flex items-center gap-2">
+                <i className="fas fa-clock"></i> Select Time Slot
+              </label>
+              <TimeRangePicker
+                onTimeSelect={(time) =>
+                  setSessionData({
+                    ...sessionData,
+                    timeSlot: {
+                      startTime: time.startTime,
+                      endTime: time.endTime,
+                    },
+                  })
+                }
+              />
+            </div>
+
             <Select
-              label="Choose session type"
+              label={
+                <span className="flex items-center gap-2 text-sm font-semibold">
+                  <i className="fas fa-list-alt"></i> Choose Session Type
+                </span>
+              }
               name="sessionType"
               options={[
                 {
                   value: "Single",
-                  title: "Create the session only for the single day",
+                  title: "Create the session only for a single day",
                 },
                 {
                   value: "Week-Long",
-                  title: "Create the session for a whole week",
+                  title: "Create the session for a full week",
                 },
                 {
                   value: "Semester-Long",
-                  title: "Create the session for the whole of current semester",
+                  title: "Create the session for the entire semester",
                 },
                 {
                   value: "Custom",
-                  title: "Create the session on custom dates",
+                  title: "Create the session on selected custom dates",
                 },
               ]}
               onChange={handleChange}
               value={sessionData.sessionType}
             />
-            <br></br>
+
             {sessionData.sessionType === "Single" && (
               <div>
-                <label className="block text-sm font-medium mb-1">
-                  Select date
+                <label className="block text-sm font-semibold mb-1 flex items-center gap-2">
+                  <i className="fas fa-calendar-day"></i> Select Date
                 </label>
                 <input
                   type="date"
                   onChange={(e) =>
-                    setSessionData({
-                      ...sessionData,
-                      dates: [e.target.value],
-                    })
+                    setSessionData({ ...sessionData, dates: [e.target.value] })
                   }
-                  className="p-2 border rounded w-full"
+                  className="p-2 border rounded w-full focus:ring-2 focus:ring-blue-300"
                 />
               </div>
             )}
+
             {sessionData.sessionType === "Week-Long" && (
               <div>
-                <label className="block text-sm font-medium mb-1">
-                  Select The Start Date for the classes to start for that whole
-                  week
+                <label className="block text-sm font-semibold mb-1 flex items-center gap-2">
+                  <i className="fas fa-calendar-week"></i> Select Start Date of
+                  the Week
                 </label>
                 <input
                   type="date"
                   onChange={(e) => handleWeekLong(e)}
-                  className="p-2 border rounded w-full"
+                  className="p-2 border rounded w-full focus:ring-2 focus:ring-blue-300"
                 />
               </div>
             )}
+
             {sessionData.sessionType === "Semester-Long" && (
               <div>
-                <label className="block text-sm font-medium mb-1">
-                  Select the days for the classes to be scheduled
+                <label className="block text-sm font-semibold mb-1 flex items-center gap-2">
+                  <i className="fas fa-calendar-alt"></i> Select Days of the
+                  Week
                 </label>
                 <MultiDropDown
                   options={[
@@ -296,64 +320,84 @@ export default function CreateSession() {
                 />
               </div>
             )}
+
             {sessionData.sessionType === "Custom" && (
               <div>
-                <label className="block text-sm font-medium mb-1">
-                  Select the date(s) for the session to be scheduled
+                <label className="block text-sm font-semibold mb-1 flex items-center gap-2">
+                  <i className="fas fa-calendar-check"></i> Select Custom Dates
                 </label>
                 <DatePicker multiple onChange={handleCustomDates} sort />
               </div>
             )}
-            <br></br>
+
             <Select
-              label="Select Classroom"
+              label={
+                <span className="flex items-center gap-2 text-sm font-semibold">
+                  <i className="fas fa-school"></i> Select Classroom
+                </span>
+              }
               name="classroom"
               options={clsrooms.map((cls) => cls.name)}
               onChange={handleChange}
               value={sessionData.classroom || ""}
             />
-            <br></br>
-            <label className="block text-sm font-medium mb-1">Max Seats</label>
-            <Input
-              name="maxSeats"
-              value={sessionData.maxSeats}
-              onChange={handleChange}
-              placeholder="Enter capacity"
-            />
-            <br></br>
-            <Button
-              label="Confirm"
-              name="confirm"
-              onClick={() => setPreviewMode(true)}
-            />
+
+            <div>
+              <label className="block text-sm font-semibold mb-1 flex items-center gap-2">
+                <i className="fas fa-chair"></i> Max Seats
+              </label>
+              <Input
+                name="maxSeats"
+                value={sessionData.maxSeats}
+                onChange={handleChange}
+                placeholder="Enter seat capacity"
+              />
+            </div>
+
+            <div className="pt-4">
+              <Button
+                label={
+                  <span className="flex items-center justify-center gap-2">
+                    <i className="fas fa-eye"></i> Preview Session
+                  </span>
+                }
+                name="confirm"
+                onClick={() => setPreviewMode(true)}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition"
+              />
+            </div>
           </div>
         )}
+
         {previewMode && (
-          <div className="p-6 border rounded-xl shadow-lg bg-white space-y-4">
-            <div className="space-y-2">
+          <div className="p-6 border rounded-xl shadow-lg bg-white mt-6 space-y-4">
+            <div className="space-y-3 text-sm">
               <div className="flex items-center gap-2">
-                <span className="font-bold">📚 Subject:</span>
+                <i className="fas fa-book text-blue-500"></i>
+                <span className="font-semibold">Subject:</span>
                 <span>{sessionData.subject || "Not selected"}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-bold">📚 Programme:</span>
+                <i className="fas fa-tags text-blue-500"></i>
+                <span className="font-semibold">Programme:</span>
                 <span>{sessionData.programme || "Not selected"}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="font-bold">🕒 Time Slot:</span>
+                <i className="fas fa-clock text-blue-500"></i>
+                <span className="font-semibold">Time Slot:</span>
                 <span>
                   {sessionData.timeSlot.startTime || "N/A"} -{" "}
                   {sessionData.timeSlot.endTime || "N/A"}
                 </span>
               </div>
-
               <div className="flex items-center gap-2">
-                <span className="font-bold">📅 Session Type:</span>
+                <i className="fas fa-list text-blue-500"></i>
+                <span className="font-semibold">Session Type:</span>
                 <span>{sessionData.sessionType}</span>
               </div>
-
               <div className="flex items-start gap-2">
-                <span className="font-bold">📋 Dates:</span>
+                <i className="fas fa-calendar-alt text-blue-500 mt-1"></i>
+                <span className="font-semibold">Dates:</span>
                 <div className="ml-2">
                   {sessionData.dates.length > 0 ? (
                     <ul className="list-disc pl-4">
@@ -366,30 +410,30 @@ export default function CreateSession() {
                   )}
                 </div>
               </div>
-
               <div className="flex items-center gap-2">
-                <span className="font-bold">🏫 Classroom:</span>
+                <i className="fas fa-school text-blue-500"></i>
+                <span className="font-semibold">Classroom:</span>
                 <span>{sessionData.classroom || "Not selected"}</span>
               </div>
-
               <div className="flex items-center gap-2">
-                <span className="font-bold">🪑 Maximum Seats:</span>
+                <i className="fas fa-chair text-blue-500"></i>
+                <span className="font-semibold">Maximum Seats:</span>
                 <span>{sessionData.maxSeats || "Not specified"}</span>
               </div>
             </div>
 
-            <div className="flex justify-between mt-6">
+            <div className="flex justify-between pt-6 gap-4">
               <button
-                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 w-1/3"
+                className="w-1/2 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition"
                 onClick={handleSubmit}
               >
-                ✅ Confirm
+                <i className="fas fa-check-circle mr-2"></i> Confirm
               </button>
               <button
-                className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 w-1/3"
+                className="w-1/2 bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-lg transition"
                 onClick={() => setPreviewMode(false)}
               >
-                🔄 Go Back
+                <i className="fas fa-arrow-left mr-2"></i> Go Back
               </button>
             </div>
           </div>
