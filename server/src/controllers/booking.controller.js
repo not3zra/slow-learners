@@ -27,7 +27,7 @@ exports.createBooking = async (req,res) =>{
         if(!session){
             return res.status(404).json({ message: "Session not found" });
         }
-        if(session.maxSeats<=0){
+        if(session.bookedSeats==session.maxSeats){
             return res.status(404).json({ message: "Session is full" });
         }
         const existingBooking = await Booking.findOne({
@@ -42,7 +42,7 @@ exports.createBooking = async (req,res) =>{
         else{
             const booking = new Booking(req.body);
             await booking.save();
-            session.maxSeats-=1;
+            session.bookedSeats += 1;
             await session.save();
             res.status(201).json({success: true, data: booking, message: "Booking successful"});
         }  
@@ -62,7 +62,7 @@ exports.cancelBooking = async (req,res) =>{
         if(booking.status=='canceled'){
             return res.status(404).json({ message: "Booking is already canceled" });
         }
-        const session = await Session.findByIdAndUpdate(booking.sessionId,{$inc:{maxSeats:1}});
+        const session = await Session.findByIdAndUpdate(booking.sessionId,{$inc:{bookedSeats:-1}});
         if(!session){
             return res.status(404).json({ message: "Session not found" });
         }

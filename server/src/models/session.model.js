@@ -34,6 +34,10 @@ const sessionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  bookedSeats : {
+    type: Number,
+    default: 0
+  },
   maxSeats: {
     type: Number,
     required: true,

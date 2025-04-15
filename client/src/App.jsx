@@ -11,6 +11,7 @@ import ViewSingleSession from "./pages/teacher/ViewSingleSession";
 import UploadMaterial from "./pages/teacher/UploadMaterial";
 import SignupPage from "./pages/Signup";
 import StudentDashboard from "./pages/student/StudentDashboard";
+import SessionBooking from "./pages/student/SessionBooking";
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
           element={<UploadMaterial />}
         />
         <Route path="/student/dashboard" element={<StudentDashboard />} />
+        <Route path="/student/book-session" element={<SessionBooking />} />
       </Routes>
     </Router>
   );

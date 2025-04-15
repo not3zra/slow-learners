@@ -41,10 +41,9 @@ exports.getSessions= async (req, res) => {
             return res.status(400).json({ message: "Programme name is required" });
         }
 
-        console.log(`Querying for sessions with programme: ${name}`);
 
         // Correct query targeting 'programme' field, not '_id'
-        const sessions = await Session.find({ programme: name });
+        const sessions = await Session.find({ programme: name }).populate("teacherId", "name");
 
         if (sessions.length === 0) {
             return res.status(404).json({ message: "No sessions found for this programme" });
