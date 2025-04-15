@@ -12,6 +12,7 @@ import UploadMaterial from "./pages/teacher/UploadMaterial";
 import SignupPage from "./pages/Signup";
 import StudentDashboard from "./pages/student/StudentDashboard";
 import SessionBooking from "./pages/student/SessionBooking";
+import ViewMaterials from "./pages/student/ViewMaterials";
 
 export default function App() {
   return (
@@ -39,6 +40,7 @@ export default function App() {
           path="/student/view-session/:id"
           element={<ViewSingleSession role="student"/>}
         />
+        <Route path="/student/session/:sessionId/view-materials/:date" element={<ViewMaterials />} />
       </Routes>
     </Router>
   );
