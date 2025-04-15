@@ -66,78 +66,100 @@ export default function ViewSingleSession({ role }) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-      <div className="bg-white w-full max-w-3xl p-6 rounded-lg shadow-md space-y-6">
-        <h1 className="text-3xl font-bold text-gray-800 text-center">
+    <div className="bg-[url('/images/background.png')] bg-cover bg-center min-h-screen flex items-center justify-center p-6">
+      <div className="bg-white w-full max-w-3xl p-8 rounded-lg shadow-xl space-y-8">
+        <h1 className="text-4xl font-extrabold text-gray-800 text-center mb-6">
           {session.subject || "Session Details"}
         </h1>
 
         <div className="space-y-4 text-gray-700">
-          <div>
-            <strong>🕒 Time Slot:</strong> {session.timeSlot.startTime} -{" "}
+          <div className="flex items-center gap-2">
+            <i className="fas fa-clock text-black"></i>{" "}
+            <strong>Time Slot:</strong> {session.timeSlot.startTime} -{" "}
             {session.timeSlot.endTime}
           </div>
-          <div>
-            <strong>🏫 Classroom:</strong>{" "}
-            {session.classroom || "Not specified"}
+          <div className="flex items-center gap-2">
+            <i className="fas fa-chalkboard-teacher text-black"></i>{" "}
+            <strong>Classroom:</strong> {session.classroom || "Not specified"}
           </div>
-          <div>
-            <strong>🪑 Maximum Seats:</strong>{" "}
+          <div className="flex items-center gap-2">
+            <i className="fas fa-chair text-black"></i>{" "}
+            <strong>Maximum Seats:</strong>{" "}
             {session.maxSeats || "Not specified"}
           </div>
-          <div>
-            <strong>🪑 Booked Seats:</strong>{" "}
+          <div className="flex items-center gap-2">
+            <i className="fas fa-chair text-black"></i>{" "}
+            <strong>Booked Seats:</strong>{" "}
             {session.bookedSeats || "Not specified"}
           </div>
-          <div>
-            <strong>🪑 Available Seats:</strong>{" "}
+          <div className="flex items-center gap-2">
+            <i className="fas fa-chair text-black"></i>{" "}
+            <strong>Available Seats:</strong>{" "}
             {session.maxSeats - session.bookedSeats || "Not specified"}
           </div>
         </div>
 
         <div className="p-4">
-          <h2 className="text-lg font-bold text-gray-700 mb-2">
-            📅 Scheduled Dates
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">
+            <i className="fas fa-calendar-alt text-black"></i> Scheduled Dates
           </h2>
-          <Calendar tileContent={tileContent} onClickDay={handleDayClick} />
+          <div className="border border-gray-300 rounded-lg p-2">
+            <Calendar tileContent={tileContent} onClickDay={handleDayClick} />
+          </div>
         </div>
 
         {role === "teacher" ? (
-          <div className="flex justify-between mt-6">
+          <div className="flex justify-between mt-8 gap-4">
             <Button
-              label="📝 Mark Attendance"
+              label={
+                <>
+                  <i className="fas fa-pen mr-2"></i> Mark Attendance
+                </>
+              }
               name="mark-attendance"
               onClick={handleClick}
-              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg w-1/2"
+              className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg flex-1"
             />
             <Button
-              label="📁 Upload Materials"
+              label={
+                <>
+                  <i className="fas fa-upload mr-2"></i> Upload Materials
+                </>
+              }
               name="upload-materials"
               onClick={handleClick}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-1/2"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg flex-1"
             />
           </div>
         ) : (
-          <div className="flex justify-between mt-6">
+          <div className="flex justify-between mt-8 gap-4">
             <Button
-              label="👀 View Attendance"
+              label={
+                <>
+                  <i className="fas fa-eye mr-2"></i> View Attendance
+                </>
+              }
               name="view-attendance"
               onClick={() =>
                 navigate(
                   `/student/session/${session._id}/view-attendance/${date}`
                 )
               }
-              className="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded-lg w-1/2"
+              className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg flex-1"
             />
             <Button
-              label="📄 View Materials"
+              label={
+                <>
+                  <i className="fas fa-file-alt mr-2"></i> View Materials
+                </>
+              }
               name="view-materials"
               onClick={() =>
                 navigate(
                   `/student/session/${session._id}/view-materials/${date}`
                 )
               }
-              className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg w-1/2"
+              className="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-3 rounded-lg flex-1"
             />
           </div>
         )}

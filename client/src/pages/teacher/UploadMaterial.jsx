@@ -95,17 +95,13 @@ export default function UploadMaterial() {
   }, []);
 
   return (
-<div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200 relative py-10 px-4 overflow-hidden">
-  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/white-diamond.png')] opacity-10 z-0"></div>
-  <div className="relative z-10 max-w-5xl mx-auto space-y-10">
-        <h1 className="text-4xl font-extrabold text-center text-black-700 drop-shadow mb-6">
-          📚 Materials Manager
-        </h1>
-
+<div className="bg-[url('/images/background1.png')] bg-cover bg-center min-h-screen py-10 px-4 overflow-hidden">
+    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/white-diamond.png')] opacity-10 z-0"></div>
+      <div className="relative z-10 max-w-5xl mx-auto space-y-10">
         {/* Upload Section */}
         <div className="bg-white rounded-xl shadow-lg p-8 border border-blue-100">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6 border-b pb-2 border-gray-200">
-            Upload New Material
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6 border-b pb-2 border-gray-200 flex items-center gap-2">
+            <i className="fas fa-upload text-blue-500" style={{ color: 'black'}}></i> Upload New Material
           </h2>
 
           <form onSubmit={handleUpload} className="space-y-5">
@@ -156,7 +152,15 @@ export default function UploadMaterial() {
                   : "bg-gradient-to-r from-blue-500 to-indigo-500 text-white hover:from-blue-600 hover:to-indigo-600 shadow-md"
               }`}
             >
-              {uploading ? "Uploading..." : "Upload File"}
+              {uploading ? (
+                <>
+                  <i className="fas fa-spinner fa-spin mr-2" style={{ color: 'black'}}></i> Uploading...
+                </>
+              ) : (
+                <>
+                  <i className="fas fa-cloud-upload-alt mr-2" style={{ color: 'black'}}></i> Upload File
+                </>
+              )}
             </button>
           </form>
 
@@ -166,15 +170,18 @@ export default function UploadMaterial() {
           )}
         </div>
 
-        {/* Material List */}
+        {/* Material List Section */}
         <div className="bg-white rounded-xl shadow-lg p-8 border border-indigo-100">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6 border-b pb-2 border-gray-200">
-            Materials for{" "}
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6 border-b pb-2 border-gray-200 flex items-center gap-2">
+            <i className="fas fa-folder-open text-indigo-500" style={{ color: 'black'}}></i> Materials for{" "}
             <span className="text-blue-600">{formatDate(date)}</span>
           </h2>
 
           {loading ? (
-            <p className="text-gray-500">Loading materials...</p>
+            <p className="text-gray-500">
+              <i className="fas fa-spinner fa-spin mr-2" style={{ color: 'black'}}></i>Loading
+              materials...
+            </p>
           ) : materials.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="min-w-full text-sm text-left border rounded-lg overflow-hidden">
@@ -201,7 +208,7 @@ export default function UploadMaterial() {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          Download
+                          <i className="fas fa-download mr-1" style={{ color: 'black'}}></i>Download
                         </a>
                       </td>
                     </tr>
