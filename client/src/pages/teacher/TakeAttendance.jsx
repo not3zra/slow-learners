@@ -56,7 +56,7 @@ export default function TakeAttendance() {
   useEffect(() => {
     if (!sessionId) return;
     axios
-      .get(`http://localhost:5000/api/bookings/${sessionId}`, {
+      .get(`http://localhost:5000/api/bookings/session/${sessionId}`, {
         withCredentials: true,
       })
       .then((response) => {
