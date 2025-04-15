@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
+import Navbar from "../components/NavBar";
 
 export default function Home() {
   const navigate = useNavigate();
 
   return (
     <div className="home-container">
+      <Navbar role={null} />
       {/* Hero Section */}
       <header className="hero">
         <div className="hero-content">

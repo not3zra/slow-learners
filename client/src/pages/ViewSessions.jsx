@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Navbar from "../components/NavBar";
 
 export default function ViewSessions() {
   const [user, setUser] = useState(null);
@@ -95,49 +96,62 @@ export default function ViewSessions() {
   };
 
   return (
-    <div className="bg-[url('/images/background.png')] bg-cover bg-center min-h-screen flex items-center justify-center p-6">
-      <div className="bg-white w-full max-w-5xl p-8 rounded-xl shadow-xl">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-          <i className="fas fa-chalkboard-teacher text-gray-600"></i> Your Sessions
-        </h1>
+    <>
+      {user && <Navbar role={user.role} />}
+      <div className="bg-[url('/images/background.png')] bg-cover bg-center min-h-screen flex items-center justify-center p-6">
+        <div className="bg-white w-full max-w-5xl p-8 rounded-xl shadow-xl">
+          <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+            <i className="fas fa-chalkboard-teacher text-gray-600"></i> Your
+            Sessions
+          </h1>
 
-        {sessions.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {sessions.map((session) => {
-              console.log(session)
-              const sessionDetails = extractSessionDetails(session.sessionName);
-              return (
-                <Link
-                  key={session._id}
-                  to={`/${user.role}/view-session/${session._id}`}
-                  className="block p-6 border border-gray-300 bg-white text-gray-800 text-lg font-medium rounded-lg shadow-sm hover:shadow-lg hover:bg-gray-50 transition-all"
-                >
-                  <div className="flex flex-col">
-                    <div className="flex justify-between items-center">
-                      <span className="text-xl font-semibold">{sessionDetails?.subject || "Session"}</span>
-                      <span className="text-sm text-gray-500">
-                        <i className="fas fa-clock text-gray-600"></i> {session?.timeSlot.startTime} - {session?.timeSlot.endTime}
-                      </span>
+          {sessions.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {sessions.map((session) => {
+                console.log(session);
+                const sessionDetails = extractSessionDetails(
+                  session.sessionName
+                );
+                return (
+                  <Link
+                    key={session._id}
+                    to={`/${user.role}/view-session/${session._id}`}
+                    className="block p-6 border border-gray-300 bg-white text-gray-800 text-lg font-medium rounded-lg shadow-sm hover:shadow-lg hover:bg-gray-50 transition-all"
+                  >
+                    <div className="flex flex-col">
+                      <div className="flex justify-between items-center">
+                        <span className="text-xl font-semibold">
+                          {sessionDetails?.subject || "Session"}
+                        </span>
+                        <span className="text-sm text-gray-500">
+                          <i className="fas fa-clock text-gray-600"></i>{" "}
+                          {session?.timeSlot.startTime} -{" "}
+                          {session?.timeSlot.endTime}
+                        </span>
+                      </div>
+                      <div className="mt-2 space-y-1">
+                        <p className="text-sm text-gray-600">
+                          <strong>Session Type:</strong>{" "}
+                          {getSessionTypeLabel(sessionDetails?.sessionType)}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          <strong>Classroom:</strong>{" "}
+                          {sessionDetails?.classroom}
+                        </p>
+                      </div>
                     </div>
-                    <div className="mt-2 space-y-1">
-                      <p className="text-sm text-gray-600">
-                        <strong>Session Type:</strong> {getSessionTypeLabel(sessionDetails?.sessionType)}
-                      </p>
-                      <p className="text-sm text-gray-600">
-                        <strong>Classroom:</strong> {sessionDetails?.classroom}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        ) : (
-          <p className="text-gray-500 text-center">
-            <i className="fas fa-exclamation-circle text-gray-600"></i> No sessions found.
-          </p>
-        )}
+                  </Link>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="text-gray-500 text-center">
+              <i className="fas fa-exclamation-circle text-gray-600"></i> No
+              sessions found.
+            </p>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

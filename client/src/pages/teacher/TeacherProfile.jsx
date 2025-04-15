@@ -10,6 +10,7 @@ import {
   MessageCircle,
 } from "lucide-react";
 import axios from "axios";
+import Navbar from "../../components/NavBar";
 
 export default function TeacherProfile() {
   const [profile, setProfile] = useState({
@@ -98,17 +99,11 @@ export default function TeacherProfile() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200">
+      <Navbar role={"teacher"} />
       {/* Header bar that sticks when scrolled */}
       <div
         className={`sticky top-0 z-20 backdrop-blur-lg transition-all duration-300 bg-white/90 shadow-md py-2`}
       >
-        <div className="container mx-auto px-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <h1 className={`font-bold transition-all text-gray-800 text-xl`}>
-              {profile.name}
-            </h1>
-          </div>
-        </div>
       </div>
 
       <div className="container mx-auto px-4 py-6">
