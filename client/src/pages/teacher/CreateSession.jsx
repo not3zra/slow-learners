@@ -35,6 +35,7 @@ export default function CreateSession() {
     dates: [],
     classroom: undefined,
     maxSeats: 0,
+    programme: ""
   });
 
   useEffect(() => {
@@ -196,6 +197,14 @@ export default function CreateSession() {
               value={sessionData.subject || ""}
             />
             <br></br>
+            <label className="block text-sm font-medium mb-1">Programme</label>
+            <Input
+              name="programme"
+              value={sessionData.programme}
+              onChange={handleChange}
+              placeholder="Enter programme"
+            />
+            <br></br>
             <label className="block text-sm font-medium mb-1">
               Select time slot
             </label>
@@ -326,7 +335,10 @@ export default function CreateSession() {
                 <span className="font-bold">📚 Subject:</span>
                 <span>{sessionData.subject || "Not selected"}</span>
               </div>
-
+              <div className="flex items-center gap-2">
+                <span className="font-bold">📚 Programme:</span>
+                <span>{sessionData.programme || "Not selected"}</span>
+              </div>
               <div className="flex items-center gap-2">
                 <span className="font-bold">🕒 Time Slot:</span>
                 <span>

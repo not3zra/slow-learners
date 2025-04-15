@@ -30,7 +30,7 @@ export default function StudentDashboard() {
           </p>
           <div className="hero-buttons">
             <button
-              onClick={() => navigate("/book-session")}
+              onClick={() => navigate("/student/book-session")}
               className="btn btn-secondary"
             >
               Book a Session
