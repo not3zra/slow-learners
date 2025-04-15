@@ -74,7 +74,7 @@ export default function TeacherDashboard() {
             <div className="upcoming-session-list">
               {upcoming.map((val, idx) => {
                 const parts = val.name.split("-");
-                const subject = parts[1].trim()
+                const subject = parts[0] + " " + parts[1].trim();
                 let type = parts[2];
                 type += parts[2].trim()=="Single"?"":"-Long";
                 const room = type=="Single"?parts[5]:parts[6];
