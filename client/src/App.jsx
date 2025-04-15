@@ -34,6 +34,7 @@ export default function App() {
         />
         <Route path="/student/dashboard" element={<StudentDashboard />} />
         <Route path="/student/book-session" element={<SessionBooking />} />
+        <Route path="/student/view-sessions" element={<ViewSessions />} />
       </Routes>
     </Router>
   );

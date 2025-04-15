@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./StudentDashboard.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -70,7 +70,7 @@ export default function StudentDashboard() {
             Your Sessions
           </h2>
           <p className="card-content">
-            You are not enrolled in any sessions yet.
+            <Link to="/student/view-sessions">View</Link>
           </p>
         </div>
       </section>

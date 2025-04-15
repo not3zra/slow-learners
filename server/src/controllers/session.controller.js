@@ -1,4 +1,5 @@
 const Session = require('../models/session.model')
+const Booking = require('../models/booking.model')
 
 
 // Get all sessions of a specific teacher
@@ -8,7 +9,6 @@ exports.getSessions= async (req, res) => {
         if (!teacherId) {
             return res.status(400).json({ message: "teacherId is required" });
         }
-        console.log(req.query)
         const sessions = await Session.find({teacherId: teacherId});
         res.status(201).json({sessions: sessions})
         } catch (error) {
@@ -16,6 +16,17 @@ exports.getSessions= async (req, res) => {
         }
  }
 
+ exports.getSessionsOfStudent = async(req, res) => {
+    try {
+        const {studentId} = req.params;
+        if(!studentId)
+            return res.status(400).json({message: "studentId is required"});
+        const sessions = await Booking.find({studentId : studentId}).populate("sessionId");
+        res.status(201).json({sessions: sessions})
+    } catch (error) {
+        res.status(500).json({message: error.message})
+    }
+ }
 
 
 // Get details about a specific session

@@ -1,9 +1,10 @@
 const express = require('express');
 const { validateCreateSession, validateDeleteSession } = require('../middlewares/validationMiddleware');
-const { getSessions, createSession, deleteSession, getSession, getSessionsByProgramme } = require('../controllers/session.controller');
+const { getSessions, createSession, deleteSession, getSession, getSessionsByProgramme, getSessionsOfStudent } = require('../controllers/session.controller');
 
 const router = express.Router();
-router.get('/list', getSessions)
+router.get('/list', getSessions) // get by teacher
+router.get('/list/:studentId', getSessionsOfStudent) // get by student
 
 router.get('/programme', getSessionsByProgramme)
 
