@@ -64,7 +64,7 @@ export default function StudentDashboard() {
         {/* Full-width Hero Section */}
         <header className="hero">
           <div className="hero-content">
-            <h1 className="welcome-heading">Welcome {user ? user.name : ""}</h1>
+            <h1 className="welcome-heading">Welcome {user ? user.name.split(" ")[0] : ""}</h1>
             <p className="hero-subtitle">
               Organize, manage, and track your sessions effectively in one
               place.

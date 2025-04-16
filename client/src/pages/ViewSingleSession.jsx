@@ -94,7 +94,7 @@ export default function ViewSingleSession({ role }) {
             <div className="flex items-center gap-2">
               <i className="fas fa-chair text-black"></i>{" "}
               <strong>Booked Seats:</strong>{" "}
-              {session.bookedSeats || "Not specified"}
+              {session.bookedSeats || 0}
             </div>
             <div className="flex items-center gap-2">
               <i className="fas fa-chair text-black"></i>{" "}
